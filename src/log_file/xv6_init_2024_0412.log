@@ -1,0 +1,466 @@
+xv6 kernel is booting, pid: 0, stack0: 0x000000008001a5b0, sp: 0x000000008001b590, pc: 0x00000000800003a8
+
+kvmmake: MAXVA: 0x0000004000000000, TRAMPOLINE: 0x0000003ffffff000, trampoline: 0x0000000080007000, etext: 0x0000000080008000, end: 0x00000000800226b0
+proc_pagetable: trampoline: 0x0000000080007000, trapframe: 0x0000000087f74000, pid: 1, proc_name: 
+UUUUUUUUUUU, uvmfirst final sp: 0x000000008001b540, status: 0x0000000000000000
+UUUUUUUUUUU, before swatch sp: 0x000000008001b530, status: 0x0000000000000020 ra: 0x0000000080001522
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+UUUUUUUUU forkret, before usetrapret, 1, cpu: initcode, sp: 0x0000003fffffcfe0  pc, 0x0000000080000f7a, status: 0x0000000000000022
+usertrap.......  user >>>> supervisor
+>>>>>>>>, trap_frame_epc: 0x0000000000000014 , name: initcode, scause: 8
+ready to syscall: num: 7, pid: 1 ***************** sys_exec 
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+proc_pagetable: trampoline: 0x0000000080007000, trapframe: 0x0000000087f74000, pid: 1, proc_name: initcode
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+UUUUUUU exec load file, type: 1, 0x0000000000000000. mem_size:4096, flag: 5
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+UUUUUUU exec load file, type: 1, 0x0000000000001000. mem_size:48, flag: 6
+UUUUUUUUUUU, user stack top: this_sp 0x0000003fffffcbd0, user_sp: 0x0000000000004000, ra: 0x000000008000455e pc: 0x0000000080004562
+UUUUUUUUUUU, exec final  status: 0x0000000000000022   sepc: 0x000000008000661e, ra: 0x000000008000469c. trap_frame_epc: 0x00000000000000fc, old_epc: 0x0000000000000018
+UUUUUUUUUUfinish exec, pid: 1, new_proc_sp: 0x0000000000003fe0 this_sp: 0x0000003fffffcbd0
+UUUUUUUUUUUU  after exec: sp: 0x0000003fffffcdf0, status 0x0000000000000022, ra: 0x00000000800052c0
+######### usertrapret  trapframe epc: 0x00000000000000fc, pid: 1, sstatus: 0x0000000000000020
+usertrap.......  user >>>> supervisor
+>>>>>>>>, trap_frame_epc: 0x00000000000000fc , name: init, scause: 9
+*********** call devintr from usertrap..********************..
+>>>>>>>>, trap_frame_epc: which_dev.: 1...sstatus: 0x0000000000000020
+######### usertrapret  trapframe epc: 0x00000000000000fc, pid: 1, sstatus: 0x0000000000000020
+usertrap.......  user >>>> supervisor
+>>>>>>>>, trap_frame_epc: 0x00000000000000fc , name: init, scause: 9
+*********** call devintr from usertrap..********************..
+>>>>>>>>, trap_frame_epc: which_dev.: 1...sstatus: 0x0000000000000020
+usertrap.......  user >>>> supervisor
+*********** call devintr from usertrap..********************..
+>>>>>>>>, trap_frame_epc: which_dev.: 1...sstatus: 0x0000000000000020
+usertrap.......  user >>>> supervisor
+*********** call devintr from usertrap..********************..
+>>>>>>>>, trap_frame_epc: which_dev.: 1...sstatus: 0x0000000000000020
+usertrap.......  user >>>> supervisor
+*********** call devintr from usertrap..********************..
+>>>>>>>>, trap_frame_epc: which_dev.: 1...sstatus: 0x0000000000000020
+usertrap.......  user >>>> supervisor
+*********** call devintr from usertrap..********************..
+usertrap.......  user >>>> supervisor
+ready to syscall: num: 15, pid: 1 ***************** sys_open 
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+usertrap.......  user >>>> supervisor
+ready to syscall: num: 10, pid: 1 ***************** sys_dup 
+usertrap.......  user >>>> supervisor
+ready to syscall: num: 10, pid: 1 ***************** sys_dup 
+usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Uusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+:usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+ usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+iusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+nusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+iusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+tusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+:usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+ usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+susertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+tusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+ausertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+rusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+tusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+iusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+nusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+gusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+ usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+susertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+husertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+,usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+ usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+susertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+pusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+:usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+ usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+kerneltrap: catch timer interrupt, pid: 1
+####yield: pid: 1  status: 4, sp: 0x0000003fffffcd80
+### sched, noff: 1
+xusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+3usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Fusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+Busertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+,usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+ usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+ usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+rusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+ausertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+:usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+ usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+xusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+3usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+4usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+,usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+ usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+pusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+cusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+:usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+ usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+xusertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+0usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+3usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+8usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 1 ***************** sys_write 
+
+usertrap.......  user >>>> supervisor
+ready to syscall: num: 1, pid: 1 ***************** sys_fork 
+proc_pagetable: trampoline: 0x0000000080007000, trapframe: 0x0000000087f6d000, pid: 2, proc_name: 
+###### in fork, ecp: 398, pid: 1
+usertrap.......  user >>>> supervisor
+ready to syscall: num: 3, pid: 1 ***************** sys_wait 
+wait, sleep...
+### sched, noff: 1
+UUUUUUUUU forkret, before usetrapret, 2, cpu: init, sp: 0x0000003fffffafe0  pc, 0x0000000080000f7a, status: 0x0000000000000022
+usertrap.......  user >>>> supervisor
+ready to syscall: num: 7, pid: 2 ***************** sys_exec 
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+proc_pagetable: trampoline: 0x0000000080007000, trapframe: 0x0000000087f6d000, pid: 2, proc_name: init
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+UUUUUUU exec load file, type: 1, 0x0000000000000000. mem_size:8192, flag: 5
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+### sched, noff: 1
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+UUUUUUU exec load file, type: 1, 0x0000000000002000. mem_size:152, flag: 6
+UUUUUUUUUUU, user stack top: this_sp 0x0000003fffffabd0, user_sp: 0x0000000000005000, ra: 0x000000008000455e pc: 0x0000000080004562
+UUUUUUUUUUU, exec final  status: 0x0000000000000022   sepc: 0x000000008000661e, ra: 0x000000008000469c. trap_frame_epc: 0x0000000000000b56, old_epc: 0x00000000000003d8
+UUUUUUUUUUfinish exec, pid: 2, new_proc_sp: 0x0000000000004fe0 this_sp: 0x0000003fffffabd0
+UUUUUUUUUUUU  after exec: sp: 0x0000003fffffadf0, status 0x0000000000000022, ra: 0x00000000800052c0
+usertrap.......  user >>>> supervisor
+ready to syscall: num: 15, pid: 2 ***************** sys_open 
+usertrap.......  user >>>> supervisor
+ready to syscall: num: 21, pid: 2 ***************** sys_close 
+usertrap.......  user >>>> supervisor
+ready to syscall: num: 16, pid: 2 ***************** sys_write 
+$ usertrap.......  user >>>> supervisor
+ready to syscall: num: 5, pid: 2 ***************** sys_read 
+consoleread, sleep
+### sched, noff: 1
+QEMU: Terminated

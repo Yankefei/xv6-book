@@ -1,0 +1,250 @@
+xv6 kernel is booting, pid: 0, stack0: 0x000000008001a5b0, sp: 0x000000008001b590, pc: 0x00000000800003c0
+
+kvmmake: MAXVA: 0x0000004000000000, TRAMPOLINE: 0x0000003ffffff000, trampoline: 0x0000000080007000, etext: 0x0000000080008000, end: 0x00000000800236b8
+UUUUUUUUUUU, uvmfirst final sp: 0x000000008001b540, status: 0x0000000000000000
+virtio_disk_rw, sleep in second while
+****trace_log 1******: 
+main userinit allocproc proc_pagetable uvmfirst namei namex_end scheduler kerneltrap devintr clockintr [wakeup_from_clockintr] kerneltrap devintr uartintr uartstart (uartstart empty) forkret readsb bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 2******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] readsb_end initlog recover_from_log read_head bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 3******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] install_trans write_head bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 4******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] initlog_end 
+
+usertrapret usertrap syscall, ready to: [sys_exec] exec begin_op namei ilock bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 5******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] dirlookup readi bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 6******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end iunlockput [wakeup_from_releasesleep] namex_end ilock bread brelse [wakeup_from_releasesleep] readi bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 7******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] readi_end proc_pagetable readi bread brelse [wakeup_from_releasesleep] readi_end 
+
+loadseg readi bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 8******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 9******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 10******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+UUUUUUU exec load file, type: 1, 0x0000000000000000. mem_size:4096, flag: 5
+virtio_disk_rw, sleep in second while
+****trace_log 11******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] readi_end kerneltrap devintr uartintr uartstart (uartstart empty) readi bread brelse [wakeup_from_releasesleep] readi_end
+
+loadseg readi bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+UUUUUUU exec load file, type: 1, 0x0000000000001000. mem_size:48, flag: 6
+UUUUUUUUUUU, exec final  status: 0x0000000000000022   sepc: 0x0000000080006ca0, ra: 0x0000000080004938. trap_frame_epc: 0x00000000000000e4, old_epc: 0x0000000000000018
+UUUUUUUUUUfinish exec, pid: 1, new_proc_sp: 0x0000000000003fe0 this_sp: 0x0000003fffffcbd0
+UUUUUUUUUUUU  after exec: sp: 0x0000003fffffcdf0, status 0x0000000000000022, ra: 0x0000000080005574.
+virtio_disk_rw, sleep in second while
+****trace_log 12******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] readi_end kerneltrap devintr uartintr uartstart (uartstart empty) iunlockput [wakeup_from_releasesleep] end_op [wakeup_from_end_op] kerneltrap devintr uartintr uartstart (uartstart empty) kerneltrap devintr uartintr uartstart (uartstart empty) kerneltrap devintr uartintr uartstart (uartstart empty)
+
+
+usertrapret usertrap syscall, ready to: [sys_open] begin_op namei ilock dirlookup readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end iunlockput [wakeup_from_releasesleep] namex_end ilock bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 1
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+###### in fork, ecp: 380, pid: 1
+wait, sleep...
+****trace_log 13******: 
+kerneltrap devintr clockintr [wakeup_from_clockintr] kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] [wakeup_from_releasesleep] end_op [wakeup_from_end_op] usertrapret usertrap syscall, ready to: [sys_dup] usertrapret usertrap syscall, ready to: [sys_dup] usertrapret usertrap syscall, ready to: [sys_fork] fork allocproc proc_pagetable kerneltrap devintr uartintr uartstart (uartstart empty) usertrapret usertrap syscall, ready to: [sys_wait] sleep sched 
+
+virtio_disk_rw, sleep in second while
+****trace_log 14******: 
+kerneltrap devintr uartintr uartstart (uartstart empty)
+
+forkret usertrapret usertrap syscall, ready to: [sys_exec] exec begin_op namei ilock dirlookup readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end iunlockput [wakeup_from_releasesleep] namex_end ilock bread brelse [wakeup_from_releasesleep] readi bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 15******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] readi_end proc_pagetable readi bread brelse [wakeup_from_releasesleep] readi_end
+
+
+loadseg readi bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 16******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 17******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 18******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 19******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] readi_end readi bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 20******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 21******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 22******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+UUUUUUU exec load file, type: 1, 0x0000000000000000. mem_size:8192, flag: 5
+virtio_disk_rw, sleep in second while
+****trace_log 23******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] readi_end kerneltrap devintr uartintr uartstart (uartstart empty) readi bread brelse [wakeup_from_releasesleep] readi_end
+
+
+loadseg readi bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+virtio_disk_rw, sleep in second while
+****trace_log 24******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] bread virtio_disk_rw sleep sched 
+
+virtio_disk_intr, wakeup 
+##### wakeup: pid: 2
+free_desc, wakeup
+free_desc, wakeup
+free_desc, wakeup
+UUUUUUU exec load file, type: 1, 0x0000000000002000. mem_size:152, flag: 6
+UUUUUUUUUUU, exec final  status: 0x0000000000000022   sepc: 0x0000000080006ca0, ra: 0x0000000080004938. trap_frame_epc: 0x0000000000000b56, old_epc: 0x00000000000003c0
+UUUUUUUUUUfinish exec, pid: 2, new_proc_sp: 0x0000000000004fe0 this_sp: 0x0000003fffffabd0
+UUUUUUUUUUUU  after exec: sp: 0x0000003fffffadf0, status 0x0000000000000022, ra: 0x0000000080005574.
+$ consoleread, sleep
+****trace_log 25******: 
+kerneltrap devintr virtio_disk_intr [wakeup_from_virtio_disk_intr] kerneltrap devintr uartintr uartstart (uartstart empty) [wakeup_from_free_desc] [wakeup_from_free_desc] [wakeup_from_free_desc] kerneltrap devintr uartintr uartstart (uartstart empty) virtio_disk_rw_end brelse [wakeup_from_releasesleep] readi_end kerneltrap devintr uartintr uartstart (uartstart empty) iunlockput [wakeup_from_releasesleep] end_op [wakeup_from_end_op] kerneltrap devintr uartintr uartstart (uartstart empty) kerneltrap devintr uartintr uartstart (uartstart empty) kerneltrap devintr uartintr uartstart (uartstart empty)
+
+
+usertrapret usertrap syscall, ready to: [sys_open] begin_op namei ilock dirlookup readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end readi bread brelse [wakeup_from_releasesleep] readi_end iunlockput [wakeup_from_releasesleep] namex_end ilock [wakeup_from_releasesleep] end_op [wakeup_from_end_op] usertrapret usertrap syscall, ready to: [sys_close] begin_op end_op [wakeup_from_end_op] usertrapret usertrap syscall, ready to: [sys_write] uartstart [wakeup_from_uartstart] (uartstart empty) kerneltrap devintr uartintr uartstart (uartstart empty) uartstart [wakeup_from_uartstart] (uartstart empty) kerneltrap devintr uartintr uartstart (uartstart empty) usertrapret usertrap syscall, ready to: [sys_read] sleep sched 
+
