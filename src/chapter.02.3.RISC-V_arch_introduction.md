@@ -1,18 +1,21 @@
-# riscv64 资料
+# 2.3 riscv64 资料
 
 
 
-## 介绍：
+## 1. 介绍：
 
 RISC-V 是一种基于精简指令集（RISC）原则设计的开源指令集架构（ISA），RISC-V 是开源的指令集架构
 
 
 
-## 编译环境：
+## 2. 编译环境：
 
-目前使用的编译环境：环境搭建的步骤：（todo）
+目前使用的编译环境：环境搭建的步骤,见 1.1
 
-### 工具：
+
+
+
+## 3. 工具：
 
 ```Makefile
 riscv64-unknown-elf-gcc  
@@ -25,7 +28,7 @@ riscv64-unknown-elf-objdump
 
 ![](./images/risc_v_1.png)
 
-### 1. riscv64-unknown-elf-objcopy 选项
+### 1. riscv64-unknown-elf-objcopy 命令
 
 riscv64-unknown-elf-objcopy   -S  -O  binary initcode.out initcode   这个命令的作用是什么
 

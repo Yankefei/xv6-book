@@ -1,7 +1,7 @@
-# Makefile文件的解析和语法介绍
+# 2.2 Makefile文件的解析和语法介绍
 
 
-## xv6 Makefile 文件解析：
+## 1. xv6 Makefile 文件解析：
 
 ```Makefile
 K=kernel
@@ -189,7 +189,7 @@ qemu-gdb: $K/kernel .gdbinit fs.img
 
 
 
-## 基本规则
+## 2. 基本规则
 
 Makefile 是用于指定项目中文件之间依赖关系和如何编译这些文件的一种文件。下面是 Makefile 文件的基本语法：
 
@@ -202,7 +202,7 @@ target: dependencies
 
 
 
-## 细分功能:
+## 3. 细分功能:
 
 ### 1. Tags 功能
 

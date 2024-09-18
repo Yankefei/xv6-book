@@ -1,16 +1,16 @@
-# xv6编译及实验环境搭建
+# 1.1 xv6编译及实验环境搭建
 
-## 前言
+## 1. 前言
 
 前面的部分是安装**2020年**课程的环境，最近**2023年**的课程环境，在最后面有补充~
 
-## **目的：**
+## 2. **目的：**
 
 MIT 6.S081 课程实验 
 
 https://pdos.csail.mit.edu/6.S081/2020/schedule.html
 
-## **准备：**
+## 3. **准备：**
 
 1. Vmware 上用专业模式安装 ubuntu-20.04.5-desktop-amd64.iso
 2. 换源：
@@ -26,7 +26,7 @@ deb https://mirrors.ustc.edu.cn/ubuntu/ focal-security main restricted universe 
 
 ​       
 
-## **第一步：**
+## 4. **第一步：**
 
 
 
@@ -64,7 +64,7 @@ git checkout util
 
 
 
-## **第二步：安装调试工具**
+## 5. **第二步：安装调试工具**
 
 安装调试工具：riscv-gnu-toolchain/
 
@@ -160,7 +160,7 @@ vim  ~/.bashrc
 
 
 
-## **第三步：**
+## 6. **第三步：**
 
 ### **验证环境：**
 
@@ -218,7 +218,7 @@ gdb-multiarch kernel/kernel
 
 则说明配置完整了
 
-## 参考：
+## 7. 参考：
 
 https://zhuanlan.zhihu.com/p/331492444
 
@@ -230,7 +230,7 @@ https://blog.csdn.net/ALLap97/article/details/106345045
 
 
 
-## 2023-02-25 后记:
+## 8. 2023-02-25 后记:
 
 
 

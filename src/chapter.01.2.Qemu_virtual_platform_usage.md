@@ -1,10 +1,10 @@
-# Qemu 介绍
+# 1.2 Qemu 介绍
 
 xv6的操作系统就运行在Qemu上面，所以很有必要先对它有一个大概的了解，更方便我们去使用
 
 
 
-## 运行：
+## 1. 运行：
 
 ### qemu -kernel
 
@@ -20,15 +20,15 @@ xv6的操作系统就运行在Qemu上面，所以很有必要先对它有一个�
 
 在使用 `qemu -kernel` 命令加载内核时，默认情况下，QEMU 会从内核映像文件中指定的入口地址开始执行内核代码。通常情况下，内核映像文件会在编译时指定一个特定的入口地址，该地址标志着内核代码的起始位置。
 
-## 退出：
+## 2. 退出：
 
 To quit qemu type: **Ctrl-a x** (press **Ctrl** and **a** at the same time, followed by **x**).
 
 
 
-## 启动：
+## 3. 启动：
 
-###  1. 常规启动参数
+###  1 常规启动参数
 
 ```Makefile
 QEMUOPTS = -machine virt -bios none -kernel $K/kernel -m 128M -smp $(CPUS) -nographic
@@ -55,7 +55,7 @@ QEMUOPTS += -device virtio-blk-device,drive=x0,bus=virtio-mmio-bus.0
 
 
 
-### 2. 一个实际的网络驱动启动参数：
+### 2 一个实际的网络驱动启动参数：
 
 **在net的lab中有涉及到**
 
@@ -83,7 +83,7 @@ QEMUOPTS += -device virtio-blk-device,drive=x0,bus=virtio-mmio-bus.0
 
 
 
-### 3. Qemu 对网络驱动的支持：
+### 3 Qemu 对网络驱动的支持：
 
 #### 虚拟化网络设备
 
@@ -101,7 +101,7 @@ QEMU模拟多种网络设备，这些设备可以通过命令行选项（如`-de
 
 
 
-## shell xv6 调试方法：
+## 4. shell xv6 调试方法：
 
 To use gdb with xv6, run make **make qemu-gdb** in one window, run **gdb-multiarch** (or **riscv64-linux-gnu-gdb**) 
 
@@ -114,7 +114,7 @@ gdb-multiarch
 然后就可以执行 break 打断点，以及 c 来开始调试
 ```
 
-### 关于gdb种类的介绍：
+### 1 关于gdb种类的介绍：
 
 `gdb-multiarch` 和 `riscv64-linux-gnu-gdb` 是GNU Debugger (GDB) 的两种不同变体，它们都是用于调试程序，但主要区别在于它们的适用范围和目标体系结构。
 

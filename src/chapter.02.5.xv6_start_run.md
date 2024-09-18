@@ -1,10 +1,10 @@
-# Kernel  启动
+# 2.5 Kernel  启动
 
 xv6 操作系统是如何启动的？下面会详细加以描述
 
 
 
-## 前言：真实操作系统的启动：
+## 1. 前言：真实操作系统的启动：
 
 一般操作系统的 boot loader 程序在启动时会执行以下主要过程：
 
@@ -21,13 +21,13 @@ boot loader 只读程序 -->   entry.S（里面会有起始地址：_entry） --
 
 
 
-## qemu启动：
+## 2. qemu启动：
 
 会模拟出一个内核镜像文件已经被加载的状态，并把控制权交给内核程序
 
 
 
-## **临时栈空间**
+## 3. **临时栈空间**
 
 ![](./images/kernel_start_1.png)
 
@@ -39,7 +39,7 @@ boot loader 只读程序 -->   entry.S（里面会有起始地址：_entry） --
 
 ![](./images/kernel_start_2.png)
 
-也就是说，后面 main函数，以及schdueler函数的执行，都是在 上面bss 段临时的一个栈中运行的。
+也就是说，后面 main函数，以及schdueler函数的执行，都是在 上面bss 段临时的一个大数组中，作为栈使用的。
 
 临时的栈地址大致位置如下：
 
@@ -52,7 +52,11 @@ hart 4 starting, sp: 0x000000008001f1e0
 hart 1 starting, sp: 0x000000008001c1e0
 ```
 
-**后面这些过程都会在这个栈空间中运行：**
+
+
+## 4. **在临时栈空间中运行的函数：**
+
+下面的函数，都将在这个临时的栈空间中运行，而且一开始，用户地址空间都还不完整，不过只需要栈指针 sp，对应的栈空间，以及待执行的指令，程序也是可以运行起来的。
 
 1. entry.S
 2. start函数
@@ -66,6 +70,10 @@ hart 1 starting, sp: 0x000000008001c1e0
 ### 1. entry.S
 
 The instructions at _entry set up a stack so that xv6 can run C code.
+
+为什么操作系统的启动会从这个 `_entry` 开始？ 因为 kernel.ld 的链接脚本中，已经定义了系统的入口
+
+
 
 目前可以确定，在XV6的启动过程中，每一个CPU都会从入口 _entry处开始执行的，所以初始化的堆栈
 
@@ -104,6 +112,8 @@ _entry:
 spin:  # 表示循环开始
         j spin    #无限循环指令，表示完成start后不结束
 ```
+
+所以，这个函数主要作用是在静态变量 stack0中初始化堆栈，开始调用 `start` 函数
 
 
 
@@ -165,6 +175,10 @@ start()
 
 ### 3. main 函数
 
+只会有一个CPU的进程有额外的初始化操作外，所有进程都直接调用了 scheduler 函数，准备开始调度，那么说明临时栈空间，也会在后面调度时用到，很难想象，后面所有内核进程的执行切换，都其实需要依赖这个最原始的临时栈空间！
+
+所以这里也隐藏了一个很惊人的事实：所有xv6的进程子所以会执行，就源自这里，将每一个cpu都启动了一个执行流，进程只不过是执行流上执行的一个基本单位而已。
+
 ```C
 volatile static int started = 0;
 
@@ -212,11 +226,17 @@ main()
 
 ### 4. userinit函数
 
-程序加载了initcode的内容到内存后，在什么地方真实地在用户空间来运行它呢？ 我推测，应该是 userinit 退出后，在start中的 **scheduler** 中来进行调度的
+问题：这个函数的作用是什么？
+
+在还不满足执行exec的时候，将 initcode的代码加载到特殊的用户空间中，并让它满足执行 initcode.S的完整条件，因为后面会在 scheduler中调度了。当我们拥有了完整进程的执行条件后，需要做什么呢？对了，正式执行exec, 让之后的所有进程开始走上正确的轨道
+
+
+
+问题：程序加载了initcode的内容到内存后，在什么地方真实地在用户空间来运行它呢？ 我推测，应该是 userinit 退出后，在start中的 **scheduler** 中来进行调度的
 
 是的，uvmfirst 函数会将代码段加载到 0地址，而且简单地只映射了一个PAGE页面，而且后面 epc 和 sp 分别设置的是0，以及PGSIZE。
 
-所以应该是从0地址来加载下面的这部分代码段，后面等调用ecall后，进而才会陷入内核态，开始执行sys_exec 函数
+所以应该是从0地址来加载下面的这部分代码段，后面等调用ecall后，进而才会陷入内核态，开始执行sys_exec 函数，所以说，initcode 确实在一个用户空间中执行的，执行了之后，才有之后exec的事情。
 
 命令 `od -t xC ../user/initcode` 的各部分含义如下：
 
@@ -226,7 +246,7 @@ main()
   - `xC`: 表示以十六进制形式显示文件内容，并尝试将字节解释为ASCII字符。`x` 表示十六进制，`C` 表示字符。
 - `../user/initcode`: 指定了要操作的文件路径。这里的路径意味着从当前目录的父目录中进入`user`目录，然后操作名为`initcode`的文件。
 
-总的来说，`od -t xC ../user/initcode` 这个命令会以十六进制形式显示`../user/initcode`文件的内容，并尽可能地将每个字节的数据解释成对应的ASCII字符。这对于查看或调试二进制文件中的内容非常有用。
+`od -t xC ../user/initcode` 这个命令会以十六进制形式显示`../user/initcode`文件的内容，并尽可能地将每个字节的数据解释成对应的ASCII字符。这对于查看或调试二进制文件中的内容非常有用。
 
 ```C
 // a user program that calls exec("/init")
@@ -248,7 +268,7 @@ userinit(void)
 {
   struct proc *p;
   // 在这个函数的结尾，也会执行 context.ra的值为forkret， sp的值为 kstack + PGSIZE,
-  // 所以，实际上，在initCode 的加载，也是会经过 forkret函数的 context的ra寄存器的设置
+  // 所以，实际上，后面initCode函数的加载，也是会经过 forkret函数的 context的ra寄存器的设置
   p = allocproc();
   initproc = p;
   
@@ -256,7 +276,7 @@ userinit(void)
   // and data into it.
   // 会在0号虚拟地址映射一个大小为PGSIZE的页，然后将initCode.S 的内容拷贝进去
   // 这个是initproc中，除了trapframe页，pagetable 根页面 外，申请的第三个 PGSIZE的物理空间
-  // 不过后面等initCode 调用了 exec后，这些都会被清理掉，然后加载上 init 进程的一些信息
+  // 不过后面等initCode 调用了 exec后，这些过度状态，都会被清理掉，然后加载上 init 进程的一些信息
   uvmfirst(p->pagetable, initcode, sizeof(initcode));
  
 
@@ -281,9 +301,9 @@ userinit(void)
 
 
 
-## 第一个进程的特殊用户态栈空间：
+#### 第一个进程的特殊用户空间：
 
-进程空间如下所示，和一般用exec加载的用户空间不太一样，而且目前根据观察，在执行initcode.S 的时候，sp指针直到执行exec时，trapframe_sp的值还是 `0x0000000000001000`
+进程空间如下所示， 完全是由userinit 函数构建的，注意，当执行完userinit之后，和一般用fork + exec加载的用户空间非常不一样，而且目前根据观察，在执行initcode.S 的时候，sp指针直到执行exec时，trapframe_sp的值还是 `0x0000000000001000`
 
 ![](./images/kernel_start_3.png)
 
@@ -294,9 +314,11 @@ userinit(void)
 
 
 
-### initcode.S
+### 5. initcode.S
 
-在经过scheduler 调度后，initcode.S的执行过程，因为代码是汇编指令，所以在用户空间时，内存空间如上，是一个比较特殊的用户态栈空间。
+上面的4个步骤，就是为了执行 initcode.S 的内容，也就是去使用一个真正意义的进程，开始 exec 一个 `init 入口程序`，后面shell的进程都会在init 程序中再次创建
+
+在经过scheduler 调度后，initcode.S的执行过程，因为代码是汇编指令，所以在用户空间时，内存空间如上，是一个比较特殊的用户态空间。
 
 当执行到ecall之后，就会进入kernel态的空间
 
@@ -342,9 +364,11 @@ argv:
   .long 0       // 用一个空指针标记数组的结束
 ```
 
+基本上只要第一个临时进程exec了 init程序，那么就会启动正式的进程，整个初始化过程也就完成了，同时也会将之前的那个userinit创建的临时进程清理掉
 
 
-## Kernel 态栈空间：
+
+## 5. Kernel 态栈空间：
 
 基本在 `0x0x0000003fffffc000` -  `0x0000003ffff7e000`  这个地址范围
 
@@ -374,11 +398,11 @@ kstack...  index: 63, kstack: 0x0000003ffff7e000
 
 而当exec执行完毕，那么会将initcode.S 原有的页表映射的物理内存全部清理掉，并将trapframe->epc（sepc 寄存器将是一个后面后面trap结束后，任务开始的地方）设置为init 可执行文件的入口地址：`0x00000000000000fc`,，而之前的epc是：0x0000000000000018，应该是 initcode.S 里面的exit的地址，不过基本上永远不会执行到这个地方。
 
-当exec退出，syscall退出后，执行 `usertrapret` 函数，恢复epc等信息到寄存器，然后调用汇编指令：`userret`，返回用户模式，进而开始执行用户进程init。
+当exec退出，syscall退出后，执行 `usertrapret` 函数，恢复epc等信息到寄存器，然后调用汇编指令：`userret`，返回用户模式，进而开始执行用户进程init。（这部分请参考后面 trap部分的内容）
 
 
 
-## 用户态栈空间：
+## 6. 标准的用户态栈空间：
 
 ![](./images/memory_3_1.png)
 
@@ -448,7 +472,7 @@ main(void)
 
 
 
-## 整体过程描述：
+## 7. 整体过程描述：
 
 Ref;   [xv6_init_2024_0412.log](./log_file/xv6_init_2024_0412.log) （早期日志）
 

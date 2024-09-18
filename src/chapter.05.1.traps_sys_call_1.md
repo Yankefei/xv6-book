@@ -1,4 +1,4 @@
-# Traps and system call 篇
+# 5.1 Traps and system call 篇
 
 在xv6操作系统中，system call 系统调用是基于Traps来实现的, 这里先简单介绍 system call 的一些设计，之后着重介绍traps
 
@@ -164,5 +164,4 @@ All  trap types (*other than timer interrupts*)
 
 1. 从trap handle退出的时候， SPIE 是必须要设置的，否则将导致后续运行停止，推测，从trap退出后，Qemu将SPIE赋值给了SIE，也就是开启了中断处理
 2. 进入 trap handle 之后，SIE 被自动清理掉，只留下了SPIE，设置好了SPP信息在 sstatus，也设置好了 scause.
-
 
