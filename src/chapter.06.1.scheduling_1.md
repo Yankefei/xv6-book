@@ -4,9 +4,9 @@
 
 scheduling 的核心函数 scheduler 是实现了一个非常精巧的**协程**，可以在一个执行流中，切换不同的进程信息，也正因为使用了协程，导致在阅读和理解这部分的代码的时候，有很多非常困惑的地方，比如不知道当前程序会跳转到哪里，以及后面实现lab的时候，debug进程的堆栈，经常发现当前的线程堆栈信息会过一会出现在其他线程中，也是这个原因。详细阅读和分析，确实能获得之前没有过的一些视角
 
-# schedule 所面临的一些问题：
+## 1. schedule 所面临的一些问题：
 
-## Switch cpu 从一个进程到另外一个进程的场景：
+### 1. Switch cpu 从一个进程到另外一个进程的场景：
 
 - sleep 和 wakeup 机制中：
   - 进程等待 device 或者 pipe I/O 完成
@@ -18,7 +18,7 @@ scheduling 的核心函数 scheduler 是实现了一个非常精巧的**协程**
 
 
 
-## 实现过程中的一些挑战：
+### 2. 实现过程中的一些挑战：
 
 1. 如何从一个进程切换到另外一个进程，虽然用上下文切换最简单，但是实现起来却比较晦涩
 
@@ -36,7 +36,7 @@ scheduling 的核心函数 scheduler 是实现了一个非常精巧的**协程**
 
 
 
-## 一些问题：
+### 3. 一些问题：
 
 1. Context switching 为什么需要一个额外的scheduler线程？
    1. 
@@ -66,11 +66,11 @@ scheduling 的核心函数 scheduler 是实现了一个非常精巧的**协程**
 
 
 
-# Schedule 过程描述
+## 2. Schedule 过程描述
 
 
 
-## context 结构体：
+### 1. context 结构体：
 
 ```C
 // Saved registers for kernel context switches.
@@ -101,7 +101,7 @@ struct context {
 
 
 
-## swtch 函数（汇编）
+### 2. swtch 函数（汇编）
 
 ```C
 # Context switch
@@ -157,7 +157,7 @@ swtch:
 
 
 
-## scheduler 函数
+### 3. scheduler 函数
 
 ```C
 // Per-CPU process scheduler.
@@ -222,7 +222,7 @@ scheduler(void)
 
 
 
-### 问题一： 
+#### 问题一： 
 
 为什么循环开始的地方执行一次  intr_on，是非常重要的？
 
@@ -232,7 +232,7 @@ TODO, 简单说下：
 
 
 
-## sched 函数
+### 4. sched 函数
 
 ```C
 // Switch to scheduler.  Must hold only p->lock
@@ -277,7 +277,7 @@ The only place a kernel thread gives up its CPU is in sched
 
 
 
-## sleep 函数
+### 5. sleep 函数
 
 **`chan` 不是某个单词的缩写。而是在编程中通常用来指代“channel”或一个通信或同步机制中的“等待通道”。在许多操作系统的内核编程中，特别是涉及进程或线程同步的场合，`chan` 是一个常见的术语，用来标识特定的等待条件或资源。**
 
@@ -318,7 +318,7 @@ sleep(void *chan, struct spinlock *lk)
 
 
 
-### 问题一
+#### 问题一
 
  前面acquire(&p->lock)后，如何保证后面  `release(&p->lock)` 的时候，可以保证经过sched() 后，还是在同一个cpu上执行？因为release(&p->lock) 的里面 holding函数 确实会对是否在同一个cpu进行校验的
 
@@ -373,7 +373,7 @@ forkret(void)
 
 
 
-### 问题二：
+#### 问题二：
 
 为什么当一个执行流通过sleep等操作的swtch，将执行权限交给scheduler后，很快就可以再次获取到执行权限？
 
@@ -385,7 +385,7 @@ forkret(void)
 
 
 
-### 问题三：
+#### 问题三：
 
 swtch可以直接更换执行流，为什么？
 
@@ -400,7 +400,7 @@ swtch可以直接更换执行流，为什么？
 
 
 
-## wakeup 函数
+### 6. wakeup 函数
 
 ```C
 // Wake up all processes sleeping on chan.(channel)
@@ -429,9 +429,9 @@ wakeup(void *chan)
 
 
 
-# 切换相关的一些工具函数：
+## 3. 切换相关的一些工具函数：
 
-## 获取当前的cpu信息以及进程信息
+### 1. 获取当前的cpu信息以及进程信息
 
 ```C
 // Must be called with interrupts disabled,

@@ -1,4 +1,4 @@
-# 5.3 五：timer interrupts
+# 5.4: timer interrupts
 
 RISC-V requires that timer interrupts be taken in machine mode, not supervisor mode. RISC-V machine mode executes without paging, and with a separate set of control registers, so it’s not practical to run ordinary xv6 kernel code in machine mode. As a result, xv6 handles timer interrupts completely separately from the trap mechanism laid out above.
 
@@ -18,7 +18,7 @@ it would be more convenient if xv6 could ask the RISC-V hardware for the current
 
 
 
-## timerinit函数
+## 1. timerinit函数
 
 ```C
 // core local interruptor (CLINT), which contains the timer.
@@ -71,7 +71,7 @@ timerinit()
 
 
 
-## timervec 汇编函数
+## 2. timervec 汇编函数
 
 ```Assembly
         #
@@ -133,9 +133,9 @@ kernelvec 汇编函数  -- >   kerneltrap 函数 -->  yield 中断（等待其�
 
 
 
-# 六：其他代码分析
+# 5.5 其他代码分析
 
-## trampoline.S代码：
+## 1. trampoline.S代码：
 
 ```Assembly
         #
@@ -198,7 +198,7 @@ userret:
 
 
 
-## devintr 函数
+## 2. devintr 函数
 
 ```C
 // check if it's an external interrupt or software interrupt,

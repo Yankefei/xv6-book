@@ -2,13 +2,15 @@
 
 lock在整个risc-v 操作系统代码中，有非常重要的地位，因为多进程，多核处理的实现，中断触发后的处理，都很大程度依赖锁，这里对一些锁的种类，以及使用做一些介绍
 
-# spin-lock 部分
+
+
+## 1. spin-lock 部分
 
  在保持 spinlock的时候， yielding cpu 是非法的，如果第二个线程尝试acquire spinlock时，可能会造成死锁，所以就需要一种锁，当它持有时，既可以 yield cpu资源，也可以允许中断发生。而且在 waiting to acquire时，也可以yield cpu资源，就是下面的 sleep-lock了
 
 
 
-## acquire 函数
+### 1. acquire 函数
 
 type __sync_lock_test_and_set(type *ptr, type value);
 
@@ -63,7 +65,7 @@ acquire(struct spinlock *lk)
 
 
 
-## release 函数
+### 2. release 函数
 
 __sync_lock_release 将`lock`变量重置为0，这样其他线程就可以获取锁了。
 
@@ -103,7 +105,7 @@ release(struct spinlock *lk)
 
 
 
-## holding 函数
+### 3. holding 函数
 
 ```C
 // Check whether this cpu is holding the lock.
@@ -121,7 +123,9 @@ holding(struct spinlock *lk)
 
 **它的锁是以cpu为单位的, 因为它判断了cpu_id**
 
-# sleep-lock 部分
+
+
+## 2. sleep-lock 部分
 
 因为 sleep-lock 允许 interrupt 开启，所以不能用于 interrupt handle, 因为acquiresleep 可能 yield cpu信息。
 
@@ -137,7 +141,7 @@ Sleep-lock 不能放在 spinlock 保护的关键部分里面，
 
 
 
-## acquiresleep 函数
+### 1. acquiresleep 函数
 
 ```C
 void
@@ -157,7 +161,7 @@ acquiresleep(struct sleeplock *lk)
 
 
 
-## releasesleep 函数
+### 2. releasesleep 函数
 
 ```C
 void
@@ -173,7 +177,7 @@ releasesleep(struct sleeplock *lk)
 
 
 
-## holdingsleep 函数
+### 3. holdingsleep 函数
 
 ```C
 int
@@ -198,7 +202,7 @@ holdingsleep(struct sleeplock *lk)
 
 
 
-# 在interrupt handle 中的使用
+## 3. 在interrupt handle 中的使用
 
 一些 spin-lock 同时被用于 threads 和 interrupt handle，比如下面的 tickslock, 对ticks进行加锁处理
 
@@ -263,7 +267,7 @@ sys_sleep(void)
 
 
 
-### push_off  &  pop_off 函数
+### 1. push_off  &  pop_off 函数
 
 当没有CPU 保持 spinlock时，xv6 会开启interrupt. 所以这里存在一个 book-keeping 来保存嵌套的关键内容
 
@@ -314,7 +318,7 @@ pop_off(void)
 
 
 
-### intr_off & intr_on 函数
+### 2. intr_off & intr_on 函数
 
 会调用risc-v的指令来开启和关闭中断
 
