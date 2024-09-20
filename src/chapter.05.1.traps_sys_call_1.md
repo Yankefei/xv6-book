@@ -2,7 +2,7 @@
 
 在xv6操作系统中，system call 系统调用是基于Traps来实现的, 这里先简单介绍 system call 的一些设计，之后着重介绍traps
 
-# 一：System call 相关
+## 一：System call 相关
 
 There are three kinds of event which cause the CPU to set aside ordinary execution of instructions  and force a transfer of control to special code that handles the event. One situation is a system  call, **when a user program executes the ecall instruction to ask the kernel to do something for it**. Another situation is an *exception*: an instruction (user or kernel) does something illegal, such as  divide by zero or use an invalid virtual address. The third situation is a device *interrupt*, when a  device signals that it needs attention, for example when the disk hardware finishes a read or write  request.
 

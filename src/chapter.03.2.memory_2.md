@@ -1,6 +1,6 @@
 # 3.2 Kernal address space
 
-## 内核地址空间信息：
+## 1. 内核地址空间信息：
 
 ```c
 // qemu -machine virt is set up like this,
@@ -34,11 +34,33 @@ Element:
 #define PGSIZE 4096 // bytes per page
 ```
 
-## **direct mapping**
+## 2. 启动过程中两种内存映射方式：
+
+### 1. **direct mapping**
 
 The kernel gets at RAM and memory-mapped device registers using “**direct mapping**;”
 
-## **indirect mapping**
+主要是在这个函数执行之前的位置, main.c 中执行之后，就是间接映射了
+
+```c
+// Switch h/w page table register to the kernel's page table,
+// and enable paging.
+void
+kvminithart()
+{
+  // wait for any previous writes to the page table memory to finish.
+  sfence_vma();
+
+  w_satp(MAKE_SATP(kernel_pagetable));
+
+  // flush stale entries from the TLB.
+  sfence_vma();
+}
+```
+
+
+
+### 2. **indirect mapping**
 
 1.  trampoline page
 
@@ -54,7 +76,7 @@ The kernel maps the pages for the trampoline and the kernel text with the permis
 
 
 
-## 内核空间的图示：
+## 3. 内核空间的图示：
 
 MAXVA:   **0x0000004000000000**
 
@@ -78,9 +100,9 @@ MAXVA:   **0x0000004000000000**
 
 
 
-## 关键函数：
+## 4. 关键函数：
 
-### Kminithart 函数
+### 1. Kminithart 函数
 
 >  **After this the CPU will translate addresses using the kernel page table**. Since the kernel uses an identity mapping, the now virtual  address of the next instruction will map to the right physical memory address. 
 
@@ -127,7 +149,7 @@ kvminithart()
 
 Xv6 没有开启ASID, 也就是仅仅清理指定地址的TLB缓存的功能
 
-### kvmmake 函数
+### 2. kvmmake 函数
 
 occurs before xv6 has enabled paging on the RISC-V, so addresses refer directly to physical memory.
 
@@ -167,7 +189,7 @@ kvmmake(void)
 }
 ```
 
-### proc_mapstacks 函数
+### 3. proc_mapstacks 函数
 
 ​      allocates a kernel stack for each process. It calls kvmmap to map each stack at the virtual address generated  by KSTACK, which leaves room for the invalid stack-guard pages.
 
@@ -202,7 +224,7 @@ proc_mapstacks(pagetable_t kpgtbl)
 }
 ```
 
-### walk 函数
+### 4. walk 函数
 
 finds the PTE for a virtual address,
 
@@ -278,7 +300,7 @@ walk(pagetable_t pagetable, uint64 va, int alloc)
 }
 ```
 
-### walkaddr 函数
+### 5. walkaddr 函数
 
 **返回的 physical address 不是准确的 va对应的地址，而是 pa地址所在的PPN的起始地址，如果要获取实际的物理地址，还需要拼接上后12位的offset, 显然这个函数没有这样做**
 
@@ -307,7 +329,7 @@ walkaddr(pagetable_t pagetable, uint64 va)
 }
 ```
 
-### mappages 函数
+### 6. mappages 函数
 
  installs PTEs for new mappings
 
@@ -363,9 +385,9 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
 }
 ```
 
-## 关于 kernel space 的问题：
+## 5. 关于 kernel space 的问题：
 
-### 一：关于内核栈：
+### 1. 关于内核栈：
 
 - **Q**: 内核空间中的 kstack0... 到 kstackN 的这些预分配的内核栈信息，后面是如何使用的？
 
@@ -412,4 +434,5 @@ usertrapret(void)
 
 从这里也可以看出，操作系统的任务是将栈空间分配好，sp指针设置好，至于实际的入栈出栈过程，基本上是由程序的代码段来完成的，也就是由编译器在编译时，就指定好了。
 
-### 二： todo
+### 2.  todo
+

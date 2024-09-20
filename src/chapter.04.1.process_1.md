@@ -6,23 +6,23 @@ xv6 里面的进程相关的信息，从进程地址空间的分布，和加载�
 
 
 
-## process memeory
+## 1. process memeory
 
-进程需要申请的三种内存:
+进程涉及到的三种内存:
 
 1. 虚拟的内存信息（这个在进程一开始就会生成完成），所以基本上无需申请，就可以使用
 
 1. page table   页面，也属于物理内存的范畴
 
-  属于每个进程所独有的，一般是随进程的初始化而申请，随进程的wait 等操作而释放
+  	属于每个进程所独有的，一般是随进程的初始化而申请，随进程的wait 等操作而释放
 
-1. 实际的物理内存
+3. 实际的物理内存
 
-1. 在需要的时候申请，包含了实际需要映射虚拟内存的部分，以及 用于page-table 的部分
+​	在需要的时候申请，包含了实际需要映射虚拟内存的部分，以及 用于page-table 的部分
 
   
 
-内核进程所需要的物理内存
+Q: 内核进程所需要的物理内存来源？
 
 目前看代码，没有像普通进程一样的 uvmalloc 在物理内存开坡空间的过程，具体如何做？
 
@@ -37,19 +37,19 @@ xv6 里面的进程相关的信息，从进程地址空间的分布，和加载�
 
 
 
-普通进程所需要的物理内存
+Q: 普通进程所需要的物理内存来源？
 
 1. 普通的进程使用物理内存的过程，在exec函数中，使用 uvmalloc 函数，将读取到文件中的段信息，先在物理内存上开辟空间，
 
 然后将具体的文件数据映射到已经开辟好的物理内存上
 
-1. 在risc-v中，调用 malloc，也会通过系统调用 sbrk，来间接使用 uvmalloc 函数
+2. 在risc-v中，调用 malloc，也会通过系统调用 sbrk，来间接使用 uvmalloc 函数
 
 
 
-## user space process 
+## 2. user space process 
 
-### 用户空间的图示：
+### 1. 用户空间的图示：
 
 ![](./images/memory_3_1.png)
 
@@ -64,7 +64,7 @@ xv6 里面的进程相关的信息，从进程地址空间的分布，和加载�
 
 
 
-### fork 函数
+### 2. fork 函数
 
 ```C
 // Create a new process, copying the parent.
@@ -199,7 +199,7 @@ found:
 
 
 
-### exec 函数
+### 3. exec 函数
 
 ```Go
 int
@@ -355,7 +355,7 @@ contained the kernel (but not readable/writable in user mode), the user could ch
 
 
 
-### proc_pagetable 函数
+### 4. proc_pagetable 函数
 
 ```C
 // Create a user page table for a given process, with no user memory,
@@ -399,7 +399,7 @@ proc_pagetable(struct proc *p)
 
 
 
-### proc_freepagetable 函数
+### 5. proc_freepagetable 函数
 
 调用 proc_freepagetable 的函数，不仅有 freeproc，也就是wait函数，而且还有exec函数，用于在映射新的page-table后，
 
@@ -471,7 +471,7 @@ freewalk(pagetable_t pagetable)
 
 
 
-### loadseg 函数
+### 6. loadseg 函数
 
 ```C
 // Load a program segment into pagetable at virtual address va.
@@ -508,9 +508,9 @@ loadseg(pagetable_t pagetable, uint64 va, struct inode *ip, uint offset, uint sz
 
 
 
-# 关于 process 的相关问题：
+## 3. 关于 process 的相关问题：
 
-## 一：关于内核 process
+### 1. 关于内核 process
 
 1. 当默认的-smp 设置为3时，也就是有三个逻辑的CPU，那么操作系统启动之后，正常情况下会有多少个内核进程，多少个用户进程，它们之间是如何划分和转化的？
 
@@ -540,5 +540,5 @@ loadseg(pagetable_t pagetable, uint64 va, struct inode *ip, uint offset, uint sz
 
 
 
-## 二： todo
+### 2. todo
 

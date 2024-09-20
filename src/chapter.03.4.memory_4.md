@@ -1,6 +1,6 @@
 # 3.4 Physical memory allocator
 
-## 针对节点结构体的描述：
+## 1. 针对节点结构体的描述：
 
 ```Go
 struct run {
@@ -12,7 +12,7 @@ struct run {
 
 
 
-## 初始化过程
+## 2. 初始化过程
 
 ```C
 extern char end[]; // first address after kernel.
@@ -49,7 +49,7 @@ freerange(void *pa_start, void *pa_end)
 
 ![](./images/memory_4_1.png)
 
-## free 函数
+## 3. free 函数
 
 ```C
 // Free the page of physical memory pointed at by pa,
@@ -78,7 +78,7 @@ kfree(void *pa)
 
 
 
-## kalloc 函数
+## 4. kalloc 函数
 
 ```C
 // Allocate one 4096-byte page of physical memory.

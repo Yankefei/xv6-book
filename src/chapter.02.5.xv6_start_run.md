@@ -303,7 +303,7 @@ userinit(void)
 
 #### 第一个进程的特殊用户空间：
 
-进程空间如下所示， 完全是由userinit 函数构建的，注意，当执行完userinit之后，和一般用fork + exec加载的用户空间非常不一样，而且目前根据观察，在执行initcode.S 的时候，sp指针直到执行exec时，trapframe_sp的值还是 `0x0000000000001000`
+进程空间如下所示， 完全是由userinit 函数构建的，代码段和堆栈共用一个 PGSIZE页。注意，当执行完userinit之后，和一般用fork + exec加载的用户空间非常不一样，而且目前根据观察，在执行initcode.S 的时候，sp指针直到执行exec时，trapframe_sp的值还是 `0x0000000000001000`
 
 ![](./images/kernel_start_3.png)
 
@@ -314,9 +314,60 @@ userinit(void)
 
 
 
-### 5. initcode.S
+### 5. scheduler
 
-上面的4个步骤，就是为了执行 initcode.S 的内容，也就是去使用一个真正意义的进程，开始 exec 一个 `init 入口程序`，后面shell的进程都会在init 程序中再次创建
+这个函数的作用是进程执行的调度，详细请看后面相关章节
+
+这里需要说明的是，这个函数在操作系统整个声明周期中的执行，是在临时栈空间中完成的
+
+```c
+// Per-CPU process scheduler.
+// Each CPU calls scheduler() after setting itself up.
+// Scheduler never returns.  It loops, doing:
+//  - choose a process to run.
+//  - swtch to start running that process.
+//  - eventually that process transfers control
+//    via swtch back to the scheduler.
+void
+scheduler(void)
+{
+  struct proc *p;
+  struct cpu *c = mycpu();
+
+  c->proc = 0;
+  for(;;){
+    // The most recent process to run may have had interrupts
+    // turned off; enable them to avoid a deadlock if all
+    // processes are waiting.
+    intr_on();
+
+    for(p = proc; p < &proc[NPROC]; p++) {
+      acquire(&p->lock);
+      if(p->state == RUNNABLE) {
+        // Switch to chosen process.  It is the process's job
+        // to release its lock and then reacquire it
+        // before jumping back to us.
+        p->state = RUNNING;
+        c->proc = p;
+        swtch(&c->context, &p->context);
+
+        // Process is done running for now.
+        // It should have changed its p->state before coming back.
+        c->proc = 0;
+      }
+      release(&p->lock);
+    }
+  }
+}
+```
+
+
+
+
+
+### 6. initcode.S
+
+上面的4个步骤，就是为了执行 initcode.S 的内容，也就是去使用exec创建一个真正意义的进程，当 exec 一个 `init` 入口程序后，后面shell的进程都会在init 程序中再次创建
 
 在经过scheduler 调度后，initcode.S的执行过程，因为代码是汇编指令，所以在用户空间时，内存空间如上，是一个比较特殊的用户态空间。
 
@@ -364,11 +415,13 @@ argv:
   .long 0       // 用一个空指针标记数组的结束
 ```
 
-基本上只要第一个临时进程exec了 init程序，那么就会启动正式的进程，整个初始化过程也就完成了，同时也会将之前的那个userinit创建的临时进程清理掉
+基本上只要第一个临时进程exec了 init程序，那么就会启动正式的进程，整个初始化过程也就完成了，同时也会将之前的那个userinit创建的临时进程（即使用了特殊用户空间）清理掉
 
 
 
-## 5. Kernel 态栈空间：
+## 5. 进入Kernel 态栈空间：
+
+在main函数中，`procinit` 方法用于初始化所有预分配进程的内核态栈空间，所有进入内核态的进程，都会在这个这些栈空间中运行，默认预分配64个进程的栈空间
 
 基本在 `0x0x0000003fffffc000` -  `0x0000003ffff7e000`  这个地址范围
 
@@ -396,25 +449,27 @@ kstack...  index: 63, kstack: 0x0000003ffff7e000
 
 因为打印发现，初始化时，执行exec 函数，sp指针位于  `0x0000003fffffcbd0`，而pc 寄存器和 ra寄存器表示当前的代码是位于内核栈的text段中，ra: `0x0000000080004476` pc: `0x000000008000447a`,（比临时栈空间地址小)
 
-而当exec执行完毕，那么会将initcode.S 原有的页表映射的物理内存全部清理掉，并将trapframe->epc（sepc 寄存器将是一个后面后面trap结束后，任务开始的地方）设置为init 可执行文件的入口地址：`0x00000000000000fc`,，而之前的epc是：0x0000000000000018，应该是 initcode.S 里面的exit的地址，不过基本上永远不会执行到这个地方。
+而当exec执行完毕，那么会将initcode.S 原有的页表映射的物理内存全部清理掉，并将trapframe->epc（sepc 寄存器将是一个后面后面trap结束后，任务开始的地方）设置为init 可执行文件的入口地址：`0x00000000000000fc`,，而之前的epc是：0x0000000000000018，应该是之前 initcode.S 里面的exit的地址，不过基本上永远不会执行到这个地方。
 
-当exec退出，syscall退出后，执行 `usertrapret` 函数，恢复epc等信息到寄存器，然后调用汇编指令：`userret`，返回用户模式，进而开始执行用户进程init。（这部分请参考后面 trap部分的内容）
+当exec退出，syscall退出后，执行 `usertrapret` 函数，恢复epc等信息到寄存器，然后调用汇编指令：`userret`，返回用户模式，进而开始执行用户进程init。（这部分请参考后面 trap部分的内容，这里只描述整个start的流程）
 
 
 
-## 6. 标准的用户态栈空间：
+## 6. 最终，使用标准的用户态栈空间：
 
 ![](./images/memory_3_1.png)
 
 在xv6的系统中，stack的top一般地址为： `0x0000000000004000`，可能是一般  data 和  text 段比较小，所以栈的位置是靠近底部的
 
+第一个真正意义的用户进程，是init进程：
 
 
-### init.c 进程
+
+### 1. init.c 进程，以及完成启动
 
 疑问，为什么会在user space 里面来执行这个代码？
 
-因为执行完exec后，会先退出syscall函数，然后进入`usertrapret`函数，恢复epc等相关的信息，那么CPU将跟进epc等寄存器，自动进入用户空间来执行 /init 的process
+因为执行完exec后，会先退出syscall函数，然后进入`usertrapret`函数，恢复epc等相关的信息，那么CPU将跟进epc等寄存器，自动进入用户空间来执行 /init 的process，而且更重要的，init.c里面的内容已经不属于内核管理的范围，可以放在用户程序中来完成，如需使用系统调用接口，直接调用即可。
 
 下面的这句原文说的比较简单：
 
@@ -466,13 +521,13 @@ main(void)
 }
 ```
 
-然后会在里面 fork一个进程，然后exec 上 sh。 正式拉起服务,  **xv6 正式启动了~~~**
+然后会在里面 fork一个进程，然后exec 上 sh，sh 就是交互的shell中断进程。 到此，正式拉起了所有必要服务,  **xv6 正式启动了~~~**
 
 
 
 
 
-## 7. 整体过程描述：
+## 7. 从一些日志打印中，观察整体过程描述：
 
 Ref;   [xv6_init_2024_0412.log](./log_file/xv6_init_2024_0412.log) （早期日志）
 

@@ -1,6 +1,6 @@
 # 3.3 user address space
 
-## 用户地址空间信息：
+## 1. 用户地址空间信息：
 
 ```C
 #define TRAMPOLINE (MAXVA - PGSIZE)          // 0x4000 000000L - 4096
@@ -18,7 +18,7 @@
 
 
 
-### 用户空间的图示：
+### 1. 用户空间的图示：
 
 ![](./images/memory_3_1.png)
 
@@ -41,9 +41,9 @@
 
 
 
-## 关键函数
+## 2. 关键函数
 
-### growproc 函数
+### 1. growproc 函数
 
 **Q：growproc 函数里面，如何控制申请内存的大小是否突破了进程地址空间的大小**？
 
@@ -86,7 +86,7 @@ growproc(int n)
 
 
 
-#### --uvmalloc 函数
+#### 1.1 --uvmalloc 函数
 
 ```Plain
 uvmalloc 的过程是将  4096 到 8192 这部分进行处理，  oldsz  newsz 都不需要对齐 page，但
@@ -151,7 +151,7 @@ uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int xperm)
 }
 ```
 
-#### --uvmdealloc 函数
+#### 1.2 --uvmdealloc 函数
 
 ```Plain
 uvmdealloc 的过程是将  4096 到 8192 这段都进行了处理，多清理了上面的部分
@@ -213,7 +213,7 @@ uvmdealloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz)
 
 
 
-### uvmfree 函数
+### 2. uvmfree 函数
 
 ```C
 // Free user memory pages,
@@ -231,7 +231,7 @@ uvmfree(pagetable_t pagetable, uint64 sz)
 
 
 
-#### --uvmunmap 函数
+#### 2.1 --uvmunmap 函数
 
 简单来说，是将所有之前映射虚拟内存的PTE结构全部查找，并释放（do_free 置为非0）
 
@@ -272,7 +272,7 @@ uvmunmap(pagetable_t pagetable, uint64 va, uint64 npages, int do_free)
 }
 ```
 
-#### -- freewalk 函数
+#### 2.2 -- freewalk 函数
 
 ```C
 // Recursively free page-table pages.
@@ -300,7 +300,7 @@ freewalk(pagetable_t pagetable)
 
 
 
-### copyout 函数
+### 3. copyout 函数
 
 copy data to and from user virtual addresses provided as system call arguments
 

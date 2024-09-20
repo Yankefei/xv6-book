@@ -1,6 +1,6 @@
 # 4.2 risc-v File Structure
 
-## elf 文件结构
+## 1. elf 文件结构
 
 当涉及 RISC-V 可执行文件的结构时，一般会遵循 ELF（Executable and Linkable Format）文件格式规范。下面是一个典型的 RISC-V 可执行文件的结构示意图：
 
@@ -45,7 +45,7 @@
 
 
 
-## risc-v elf 头部
+## 2. risc-v elf 头部
 
  和  /kernel/elf.h 里面定义的是一致的
 
@@ -74,7 +74,7 @@ typedef struct {
 
 
 
-## Program Header Table（程序头表）
+## 3. Program Header Table（程序头表）
 
 和  /kernel/elf.h 里面定义的是一致的
 
@@ -109,7 +109,7 @@ typedef struct {
 
 
 
-### p_type类型定义
+### 1. p_type类型定义
 
 在 ELF64 文件格式中，`Elf64_Phdr` 结构体中的 `p_type` 字段表示程序头表条目的类型，它指定了这个程序头描述的是什么样的段。一般来说，对于不同类型的段，`p_type` 可能会取不同的数值。下面是一些常见的 `p_type` 类型：
 
@@ -128,7 +128,7 @@ typedef struct {
 
 
 
-### p_flags 类型：
+### 2. p_flags 类型：
 
 对于`Elf64_Phdr`的`p_flags`字段，标志包括：
 
