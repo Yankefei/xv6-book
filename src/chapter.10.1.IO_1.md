@@ -1,102 +1,14 @@
-# input output 篇
-
-xv6的输入输出流，实现过程比较简单，输出只有printf 往中断输出这一种方式，输入的话，也只有读取命令行指令，读取文件这种。虽然实现比较简单，单基本的相关功能都有涉及，尤其是**重定向标准输入，标准输出，以及标准错误**，通过阅读代码，配合管道相关的部分，能更深刻了解如何使用
-
-# output
+# 10.1 Input
 
 
 
-## printf 函数 in kernel
-
-
-
-\b 的作用：
-
-在计算机输入输出中，`\b`通常用作退格（Backspace）的转义字符。当这个字符在输出流中遇到时，它通常会告诉显示设备（比如终端或文本编辑器）将当前位置向左移动一格。这个操作不会删除字符，但如果后续有更多输出，新的字符会覆盖掉前面的字符。在一些文本处理情境中，可以用`\b`来模拟删除前一个字符的效果。
-
-
-
-```C
-// the UART control registers are memory-mapped
-// at address UART0. this macro returns the
-// address of one of the registers.
-#define Reg(reg) ((volatile unsigned char *)(UART0 + reg))
-
-// the UART control registers.
-// some have different meanings for
-// read vs write.
-// see http://byterunner.com/16550.html
-#define RHR 0                 // receive holding register (for input bytes)
-#define THR 0                 // transmit holding register (for output bytes)
-#define IER 1                 // interrupt enable register
-#define IER_RX_ENABLE (1<<0)
-#define IER_TX_ENABLE (1<<1)
-#define FCR 2                 // FIFO control register
-#define FCR_FIFO_ENABLE (1<<0)
-#define FCR_FIFO_CLEAR (3<<1) // clear the content of the two FIFOs
-#define ISR 2                 // interrupt status register
-#define LCR 3                 // line control register
-#define LCR_EIGHT_BITS (3<<0)
-#define LCR_BAUD_LATCH (1<<7) // special mode to set baud rate
-
-#define LSR 5                 // line status register
-#define LSR_RX_READY (1<<0)   // input is waiting to be read from RHR
-// 查看是否可以send to THR
-#define LSR_TX_IDLE (1<<5)    // THR can accept another character to send
-
-#define ReadReg(reg) (*(Reg(reg)))
-#define WriteReg(reg, v) (*(Reg(reg)) = (v))
-```
-
-
-
-uartputc_sync 函数
-
-专用于内核的打印字符函数
-
-```C
-// alternate version of uartputc() that doesn't 
-// use interrupts, for use by kernel printf() and
-// to echo characters. it spins waiting for the uart's
-// output register to be empty.
-// 不用interrupts， 是同步的输出
-void
-uartputc_sync(int c)
-{
-  push_off();
-
-  // 用于控制终止输出
-  if(panicked){
-    for(;;)
-      ;
-  }
-
-  // wait for Transmit Holding Empty to be set in LSR.
-  while((ReadReg(LSR) & LSR_TX_IDLE) == 0)
-    ;
-  WriteReg(THR, c);
-
-  pop_off();
-}
-```
-
-
-
-# Input
-
-
-
-
-
-
-
-# 文件描述符：
+文件描述符：
 
 在UNIX和类UNIX系统中，0 表示标准输入、1 表示标准输出、2 表示标准错误。
 
 
 
-## I/O 重定位
+## 1. I/O 重定位
 
 
 
@@ -110,7 +22,7 @@ uartputc_sync(int c)
 
 
 
-## 重定位时close 的作用：
+## 2. 重定位时close 的作用：
 
 > The close system call releases a file descriptor, making it free for reuse by a future open, pipe, or dup system call (see below). A newly allocated file descriptor i**s always the lowest numbered unused descriptor of the current process.**
 
@@ -137,7 +49,7 @@ if(fork() == 0) {
 
 
 
-## Fork 会对输出做排序
+## 3. Fork 会对输出做排序
 
 fork之后，文件的偏移量是共用的
 
@@ -163,7 +75,7 @@ if(fork() == 0) {
 
 
 
-## Dup 另外一种公用文件偏移量的方法
+## 4. Dup 另外一种公用文件偏移量的方法
 
 > The dup system call duplicates an existing file descriptor, returning a new one that refers to the same underlying I/O object. **Both file descriptors share an offset**, just as the file descriptors duplicated by fork do. This is another way to write hello world into a file: 
 
@@ -232,7 +144,7 @@ int main() {
 
 
 
-## pipe 的作用：
+## 5. pipe 的作用：
 
 有名管道和无名管道都是半双工的。
 
@@ -371,7 +283,7 @@ write(fd, data, data_size); // 将数据写入管道
 
 
 
-## 文件 file
+## 6. 文件 file
 
 ### fstat 系统调用
 
