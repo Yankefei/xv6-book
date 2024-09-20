@@ -1,6 +1,6 @@
-## 8.3 二：Logging
+# 8.3 Logging
 
-### 一句话描述：
+## 1. 一句话描述：
 
 日志记录层，用于将多个 transaction 事务，统一进行提交。如果对同一个block重复进行写入buf，那么只需要写入最后一次buf内容即可，相当于做了写入层的优化。如果一**次写入多个data block时**发生了异常，可以进行数据回滚恢复，**不会让data block中出现写入了一半的data block块的情况。**
 
@@ -68,7 +68,7 @@ commit()
 
 
 
-### Logging 的使用范式：
+## 2. Logging 的使用范式：
 
 ```C++
 begin_op()
@@ -89,9 +89,9 @@ end_op();
 
 
 
-### 上层调用方式：
+## 3. 上层调用方式：
 
-#### 1. log_wirte
+### 1. log_wirte
 
 这是一种调用的方式，主要作用是将buf 结构体需要变动的消息告知log层，
 
@@ -104,7 +104,7 @@ brelse(bp)
 
 因为在一开始的地方，会判断当前  log.outstanding 必须大于1，所以推测，这个函数的调用，必须要在 begin_op 和 end_op 之间进行，
 
-#### 2. begin_op   + end_op
+### 2. begin_op   + end_op
 
 经过查看代码，基本上可以确定，代码中，所有需要调用log_write的地方，都需要用 begin_op  和  end_op 来进行包裹才可以。
 
@@ -114,7 +114,7 @@ brelse(bp)
 
 
 
-### log 结构体
+## 4. log 结构体
 
 ```C
 // Simple logging that allows concurrent（同时发生的）FS system calls.
@@ -169,7 +169,7 @@ struct log {
 
 
 
-### Log在磁盘中的布局：
+## 5. Log在磁盘中的布局：
 
 ```C++
  [   boot block   |   super block   |                    log                    |   
@@ -187,7 +187,9 @@ log的block的序号位于 2，也就是从第三个block开始， 然后在log�
 
 
 
-### begin_op 函数
+## 6. 关键函数分析:
+
+### 1. begin_op 函数
 
 ```C
 // called at the start of each FS system call.
@@ -215,7 +217,7 @@ begin_op(void)
 
 
 
-### end_op 函数
+### 2. end_op 函数
 
 ```C
 // called at the end of each FS system call.
@@ -265,7 +267,7 @@ end_op(void)
 
 
 
-### commit 函数
+### 3. commit 函数
 
 ```C++
 /**
@@ -294,7 +296,7 @@ commit()
 
 
 
-### log_write 函数
+### 4. log_write 函数
 
 用于当使用者修改了 buffer里面的数据，然后需要在logging中记录这个被修改的block的number信息，并将buffer里面的 **refcnt** 字段加1。
 

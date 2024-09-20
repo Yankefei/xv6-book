@@ -1,6 +1,6 @@
-## 8.4 三：Inode
+# 8.4 inode
 
-### 一句话描述
+## 1. 一句话描述
 
 ​     inode 和 dinode 分别用来做什么？一句话描述：
 
@@ -40,7 +40,9 @@ Inode的ref是针对**文件层面**的，如果读取文件一次，那么ref�
 
 
 
-### inode层的使用范式：
+## 2. inode 层的设计：
+
+### 1. inode层的使用范式：
 
 Thus a typical sequence is:
 
@@ -56,7 +58,7 @@ Thus a typical sequence is:
 
 
 
-### Inode 层的设计逻辑
+### 2. inode 层的设计逻辑
 
 An inode and its in-memory representation go through a sequence of states before they can be used by the rest of the file system code.
 
@@ -92,7 +94,7 @@ An inode and its in-memory representation go through a sequence of states before
 
 
 
-### Inod 对应的磁盘 结构体dinode
+### 3. inod 对应的磁盘 结构体dinode
 
 superblock 节点信息
 
@@ -138,7 +140,7 @@ struct dinode {
 
 
 
-### Inode 内存 结构体
+### 4. inode 内存 结构体
 
 在xv6中，inode都放在 itable的内存中，总数为 **50个**，如果用完了，会报错
 
@@ -182,7 +184,7 @@ struct inode {
 
 
 
-### inode 中的目录结构
+### 5. inode 中的目录结构
 
 ```C++
 struct dirent {
@@ -195,7 +197,9 @@ struct dirent {
 
 
 
-### bmap 函数
+## 3. 关键函数分析：
+
+### 1. bmap 函数
 
 按照上面内存布局的顺序来读取和访问里面的元素信息
 
@@ -338,7 +342,7 @@ bfree(int dev, uint b)
 
 
 
-### ialloc 函数
+### 2. ialloc 函数
 
 里面用到了 iget 函数
 
@@ -402,7 +406,7 @@ ialloc(uint dev, short type)
 
 
 
-### iget 函数
+### 3. iget 函数
 
 iget 函数，仅仅从 **itable** 返回一个内存节点的指针，没有进行磁盘操作。
 
@@ -473,7 +477,9 @@ iget(uint dev, uint inum)
 }
 ```
 
-### iput 函数
+
+
+### 4. iput 函数
 
 降低一个内存中的inode节点的 reference数
 
@@ -528,7 +534,7 @@ iput(struct inode *ip)
 
 
 
-### ilock 函数
+### 5. ilock 函数
 
 ```C++
 // Lock the given inode.
@@ -567,7 +573,7 @@ ilock(struct inode *ip)
 
 
 
-### readi函数
+### 6. readi函数
 
 ```C
 #define BSIZE 1024  // block size
@@ -618,7 +624,7 @@ readi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
 
 
 
-### writei函数
+### 7. writei函数
 
 ```C
 #define MAXFILE (NDIRECT + NINDIRECT) // 12 + 256 个块

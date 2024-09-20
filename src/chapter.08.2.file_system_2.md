@@ -1,6 +1,6 @@
-## 8.2 一：Buffer cache
+# 8.2 Buffer cache
 
-### 一句话描述：
+## 1. 一句话描述：
 
 Buffer cache 用来直接封装具体的磁盘设备的操作，并对重复的读取操作进行缓存操作，使用引用计数来进行维护，减少读取的次数，针对写入，目前没有做优化，调用一次  bwrite， 则会写入一次
 
@@ -26,7 +26,7 @@ struct {
 
 
 
-### buf 结构体：
+## 2. buf 结构体：
 
 下面的data 字段数组，将会把磁盘中，一个完整的block块的内容都放在里面。
 
@@ -50,7 +50,11 @@ struct buf {
 
 
 
-### binit 函数 (1 - 4 图)
+## 3. 关键函数分析：
+
+
+
+### 1. binit 函数 (1 - 4 图)
 
 ```C++
 void
@@ -78,7 +82,7 @@ binit(void)
 
 
 
-### bget 函数
+### 2. bget 函数
 
 > ​      It is safe for bget to acquire the buffer’s sleep-lock outside of the bcache.lock critical(关键) section, since the non-zero b->refcnt prevents the buffer from being re-used for a different disk block.
 
@@ -138,7 +142,7 @@ bget(uint dev, uint blockno)
 
 
 
-### bread 函数
+### 3. bread 函数
 
 ```C
 // Return a locked buf with the contents of the indicated block.
@@ -158,7 +162,7 @@ bread(uint dev, uint blockno)
 }
 ```
 
-### bwrite 函数
+### 4. bwrite 函数
 
 ```C
 // Write b's contents to disk.  Must be locked.
@@ -173,7 +177,7 @@ bwrite(struct buf *b)
 
 
 
-### brelse 函数
+### 5. brelse 函数
 
 将申请到的buffer缓存节点放在head的next位置，表示最进刚更新完毕
 
