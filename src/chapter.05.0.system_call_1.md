@@ -1,4 +1,4 @@
-# 5.1 system call 介绍
+# 5.1 System call 介绍
 
 在xv6操作系统中，system call 系统调用是基于Traps来实现的, 这里先简单介绍 system call 的一些设计，之后着重介绍traps
 

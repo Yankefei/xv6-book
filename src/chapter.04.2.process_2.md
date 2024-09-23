@@ -1,4 +1,4 @@
-# 4.2 risc-v File Structure
+# 4.2 Risc-v File Structure
 
 ## 1. elf 文件结构
 

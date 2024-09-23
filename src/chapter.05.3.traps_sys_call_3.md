@@ -1,4 +1,4 @@
-# 5.4: timer interrupts
+# 5.4: Timer interrupts
 
 RISC-V requires that timer interrupts be taken in machine mode, not supervisor mode. RISC-V machine mode executes without paging, and with a separate set of control registers, so it’s not practical to run ordinary xv6 kernel code in machine mode. As a result, xv6 handles timer interrupts completely separately from the trap mechanism laid out above.
 

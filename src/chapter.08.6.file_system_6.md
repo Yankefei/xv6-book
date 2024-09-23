@@ -1,4 +1,4 @@
-# 8.6 PathName
+# 8.6 目录相关
 
 **directory entry ！= directory**
 

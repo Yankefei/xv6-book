@@ -1,4 +1,4 @@
-# 5.2: trap 介绍
+# 5.2: Trap 介绍
 
 ## 1. Trap handle 的工作场景
 

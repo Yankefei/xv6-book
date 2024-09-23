@@ -1,4 +1,4 @@
-# 6.1 xv6 note - scheduling 篇
+# 6.1 Scheduling介绍
 
 
 

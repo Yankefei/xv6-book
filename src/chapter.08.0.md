@@ -1,4 +1,4 @@
-# 第八章：file_system篇
+# 第八章：文件系统篇
 
 
 
@@ -24,5 +24,4 @@ risc-v 操作系统里面的文件系统，分为下面这些逻辑分层
 2. Directory       目录，信息，也会保存在磁盘最后面的data block结构中
 3. Pathname    由一层层的目录所组成的文件目录结构，是对上一个 directory的封装
 4. File descriptor
-
 

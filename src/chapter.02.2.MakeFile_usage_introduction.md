@@ -1,4 +1,4 @@
-# 2.2 Makefile文件的解析和语法介绍
+# 2.2 Makefile文件的分析和语法介绍
 
 
 ## 1. xv6 Makefile 文件解析：
