@@ -284,5 +284,7 @@ Result: pass  第二个方案的结果：
 
 
 
+## lab github 地址：
 
+[os_homework_from_ykf](https://github.com/Yankefei/os_homework_from_ykf)
 

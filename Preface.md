@@ -8,3 +8,7 @@
 
 再次感谢 Frans Kaashoek 和 Robert Morris 两位老法师~
 
+
+
+本文github地址: https://github.com/Yankefei/xv6-book
+
