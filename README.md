@@ -1,7 +1,7 @@
 # 目录
 
 
-* [写在前面](./preface.md)
+* [写在前面](./Preface.md)
 
 * [第一章：运行环境介绍和搭建](./src/chapter.01.0.md)
   * [1.1 xv6编译及实验环境搭建](./src/chapter.01.1.chapter.01.RISC-V_lab_env_build.md)
