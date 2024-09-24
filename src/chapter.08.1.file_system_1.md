@@ -1,6 +1,6 @@
 # 8.1 系统Parm 解释
 
-
+file: kernel/param.h
 
 ```C++
 #define NOFILE       16  // open files per process
