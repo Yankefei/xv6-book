@@ -2,6 +2,8 @@
 
 ## 1. 内核地址空间信息：
 
+file: kernel/riscv.h
+
 ```c
 // qemu -machine virt is set up like this,
 // based on qemu's hw/riscv/virt.c:
