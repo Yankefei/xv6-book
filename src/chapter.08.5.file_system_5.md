@@ -14,21 +14,25 @@ struct dirent {
 
 ## 1. dirlookup 函数
 
-**疑问：**
+**Q&A**
 
 ​       1. 函数内部，是如何通过 dp的inode指针，以及一个文件名，来找到这个文件对应的信息，比如inode，还有off?
 
-```Plain
+
 inode 函数是通过iget 来返回的，也就是先通过name，找到对应的dirent结构信息，然后才能获取里面保存到的inum信息，最后再将实际的inode指针返回回来，off就是 在buff中寻找dirent数组中的对应元素
-```
+
+
+**Q&A**
 
 2. dirent 目录结构是保存在哪里的？缺少一个整体的布局
 
-​	 保存在最底层磁盘中的buf的 data 结构中
+   保存在最底层磁盘中的buf的 data 结构中
+
+**Q&A**
 
 3. Inode 结构是保存在哪里？
 
- 	放在一个全局的itable列表中，保存在内存中
+   放在一个全局的itable列表中，保存在内存中
 
 
 

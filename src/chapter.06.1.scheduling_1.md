@@ -1,8 +1,10 @@
-# 6.1 Scheduling介绍
+# 6.1 Scheduling介绍(重要)
 
 
 
 scheduling 的核心函数 scheduler 是实现了一个非常精巧的**协程**，可以在一个执行流中，切换不同的进程信息，也正因为使用了协程，导致在阅读和理解这部分的代码的时候，有很多非常困惑的地方，比如不知道当前程序会跳转到哪里，以及后面实现lab的时候，debug进程的堆栈，经常发现当前的线程堆栈信息会过一会出现在其他线程中，也是这个原因。详细阅读和分析，确实能获得之前没有过的一些视角
+
+
 
 ## 1. schedule 所面临的一些问题：
 
@@ -38,9 +40,10 @@ scheduling 的核心函数 scheduler 是实现了一个非常精巧的**协程**
 
 ### 3. 一些问题：
 
+**Q&A**
+
 1. Context switching 为什么需要一个额外的scheduler线程？
-   1. 
-   2. The xv6 scheduler has a dedicated（独立的） thread (saved registers and stack) per CPU  because it is not safe for the scheduler to execute on the old process’s kernel stack: some other core might wake the process up and run it, and it would be a disaster(灾难) to use the same stack on two different cores.
+   1. The xv6 scheduler has a dedicated（独立的） thread (saved registers and stack) per CPU  because it is not safe for the scheduler to execute on the old process’s kernel stack: some other core might wake the process up and run it, and it would be a disaster(灾难) to use the same stack on two different cores.
 
 想要实现线程资源的相互交换，最好是有一个单独CPU(进程)的交换空间，这样，可以方便交换，而且可以避免在交换时，存在一些时间段，当第一个线程的寄存器和栈指针赋值给另外一个，而还没有相互交换时，造成两个CPU同时可能执行相同栈信息的可能。
 
@@ -48,7 +51,7 @@ scheduling 的核心函数 scheduler 是实现了一个非常精巧的**协程**
 
 
 
-
+**Q&A**
 
 2. 在交换的过程中，栈指针sp可以保存，不过栈内存段本身如何保存？还是说无需保存的必要
 
@@ -222,7 +225,7 @@ scheduler(void)
 
 
 
-#### 问题一： 
+**Q&A**
 
 为什么循环开始的地方执行一次  intr_on，是非常重要的？
 
@@ -320,6 +323,8 @@ sleep(void *chan, struct spinlock *lk)
 
 #### 问题一
 
+**Q&A**
+
  前面acquire(&p->lock)后，如何保证后面  `release(&p->lock)` 的时候，可以保证经过sched() 后，还是在同一个cpu上执行？因为release(&p->lock) 的里面 holding函数 确实会对是否在同一个cpu进行校验的
 
 这个问题回答起来比较复杂一些，首先，经过sleep后，执行流进入到了 scheduler 的后半段，也就是 `swtch` 函数调用之后的部分，那么这样看，acquire(p->lock)其实和scheduler最后的 release(&p->lock) 是一个完成的过程
@@ -375,6 +380,8 @@ forkret(void)
 
 #### 问题二：
 
+**Q&A**
+
 为什么当一个执行流通过sleep等操作的swtch，将执行权限交给scheduler后，很快就可以再次获取到执行权限？
 
 是因为：
@@ -386,6 +393,8 @@ forkret(void)
 
 
 #### 问题三：
+
+**Q&A**
 
 swtch可以直接更换执行流，为什么？
 
@@ -423,7 +432,9 @@ wakeup(void *chan)
 }
 ```
 
-- 问题：为什么会有遍历所有进程列表时，判断是否为当前CPU所执行的进程？
+**Q&A**
+
+为什么会有遍历所有进程列表时，判断是否为当前CPU所执行的进程？
 
 存在这个判断，也就意味着：它只将当前cpu上执行的进程的状态设置为 RUNNABLE ! 也就是说，只会唤醒当前正在执行的进程
 

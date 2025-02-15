@@ -191,9 +191,9 @@ qemu-gdb: $K/kernel .gdbinit fs.img
 
 ## 2. 基本规则
 
-Makefile 是用于指定项目中文件之间依赖关系和如何编译这些文件的一种文件。下面是 Makefile 文件的基本语法：
+Makefile 是用于指定项目中文件之间依赖关系和如何编译这些文件的一种文件。
 
-**规则（Rules）**：Makefile 中最基本的元素是规则，它告诉 make 工具如何生成一个或多个目标文件。语法如下：
+下面是 Makefile 文件的基本语法：它告诉 make 工具如何生成一个或多个目标文件。语法如下：
 
 ```Plain
 target: dependencies
@@ -202,23 +202,9 @@ target: dependencies
 
 
 
-## 3. 细分功能:
+## 3. 需要留意的细分功能:
 
-### 1. Tags 功能
-
-```Makefile
-tags: $(OBJS) _init
-  etags *.S *.c
-```
-
-在 Makefile 中，这句语句的作用是生成代码浏览的标签文件。让我们逐步解释：
-
-- `tags: $(OBJS) _init`: 这是一个目标规则，其中`tags`是目标名称，`(OBJS) _init`是依赖项列表。这意味着要生成名为`tags`的目标文件，其依赖于`$(OBJS)`和`_init`这些文件或目标。
-- `etags *.S *.c`: 这是生成标签文件的命令。`etags`是一个工具程序，用于创建代码浏览器所需的标签文件。通常，`*.S`和`*.c`通配符表示所有的汇编语言文件和C语言文件。
-
-因此，当运行`make tags`时，Makefile将检查`$(OBJS)`和`_init`是否需要更新，如果有任何依赖项需要更新，则执行`etags *.S *.c`命令来生成标签文件`tags`。**生成的标签文件**可以用于代码导航和快速定位特定函数或变量的定义和引用。
-
-### 2. 模式规则
+### 1. 生成 asm文件和 sym文件
 
 ```Makefile
 ULIB = $U/ulib.o $U/usys.o $U/printf.o $U/umalloc.o
@@ -229,37 +215,25 @@ _%: %.o $(ULIB)
   $(OBJDUMP) -t $@ | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $*.sym
 ```
 
-上面语句的解析：
+简单说明：
 
-> 这段 Makefile 包含了一个模式规则，用于生成用户程序的可执行文件、汇编代码和符号表。
->
-> - `ULIB = $U/ulib.o $U/usys.o $U/printf.o $U/umalloc.o`: 定义了一个变量 `ULIB`，包含了多个目标文件，这些目标文件是用户库的一部分。
-> - `_%: %.o $(ULIB)`: 这是一个模式规则，指定了如何生成名为`_XXX`的可执行文件，其中`XXX`是对应的`.o`文件的名称。依赖项包括当前目录下的`.o`文件以及定义的`ULIB`中的目标文件。
-> - `$(LD) $(LDFLAGS) -T $U/user.ld -o $@ $^`: 使用链接器将目标文件和用户库链接在一起，生成可执行文件。
-> - `$(OBJDUMP) -S $@ > $*.asm`: 使用`objdump`工具生成可执行文件的反汇编代码，并将结果输出到以当前文件名为基础的`.asm`文件中。
-> - `$(OBJDUMP) -t $@ | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $*.sym`: 使用`objdump`工具提取可执行文件的符号表信息，并通过`sed`命令对其进行处理，然后将处理后的结果输出到以当前文件名为基础的`.sym`文件中。
->
-> 因此，当执行类似`make XXX`的命令时，Makefile会根据对应的`.o`文件和用户库文件生成可执行文件、汇编代码文件和符号表文件。
->
-> 注意： _%: %.o $(ULIB)  这样写，模式规则匹配时：生成的 xx 就不会包含  ULIB里面的文件了
+1. `ULIB = $U/ulib.o $U/usys.o $U/printf.o $U/umalloc.o`: 定义了一个变量 `ULIB`，包含了多个目标文件，这些目标文件是用户库的一部分。
 
-`**.asm 文件非常重要，后面需要用它在lab debug中追踪当前代码执行的位置**`
+2. `_%: %.o $(ULIB)`: 这是一个模式规则，指定了如何生成名为`_XXX`的可执行文件，其中`XXX`是对应的`.o`文件的名称。依赖项包括当前目录下的`.o`文件以及定义的`ULIB`中的目标文件。
 
+3. `$(LD) $(LDFLAGS) -T $U/user.ld -o $@ $^`: 使用链接器将目标文件和用户库链接在一起，生成可执行文件。
 
+4. `$(OBJDUMP) -S $@ > $*.asm`: 使用`objdump`工具生成可执行文件的反汇编代码，并将结果输出到以当前文件名为基础的`.asm`文件中。
 
-### 3. 保留过程的生成物
+5. `$(OBJDUMP) -t $@ | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $*.sym`: 使用`objdump`工具提取可执行文件的符号表信息，并通过`sed`命令对其进行处理，然后将处理后的结果输出到以当前文件名为基础的`.sym`文件中。
 
-```Makefile
-.PRECIOUS: %.o
-```
+因此，当执行类似`make XXX`的命令时，Makefile会根据对应的`.o`文件和用户库文件生成可执行文件、汇编代码文件和符号表文件。
 
-`.PRECIOUS: %.o` 这句 Makefile 表示将 `.o` 文件标记为“宝贵”的，即使在 Make 过程中被认为是临时文件并被删除的情况下，这些 `.o` 文件也会被保留下来。通常情况下，Make 工具会在生成目标文件后删除中间文件（比如 `.o` 文件），以保持工作目录的清洁。
-
-但是，通过在 Makefile 中使用 `.PRECIOUS: %.o`，你告诉 Make 工具不要删除任何匹配模式`%.o`的中间文件。这可以确保在 Make 过程中即使出现意外终止或其他问题，中间文件也会被保留下来，以便进一步调试或分析问题。这在需要手动查看或检查中间文件时非常有用。
+**.asm 文件非常重要，后面需要用它在lab debug中追踪当前代码执行的汇编地址**
 
 
 
-### 4. 按规则生成文件的方式
+### 2.  fs.img文件生成
 
 ```Makefile
 UPROGS=\
@@ -285,22 +259,11 @@ fs.img: mkfs/mkfs README $(UPROGS)
   mkfs/mkfs fs.img README $(UPROGS)
 ```
 
-> 这段 Makefile 片段定义了一个变量 `UPROGS`，其中包含了一系列用户程序的路径。然后定义了一个规则，用于生成文件系统镜像 `fs.img`。
->
-> - `UPROGS`: 这个变量包含了一系列用户程序的路径，每个路径代表一个用户程序。
-> - `fs.img: mkfs/mkfs README $(UPROGS)`: 这是一个规则，指定了生成 `fs.img` 文件的依赖关系。即在生成 `fs.img` 文件之前，需要确保 `mkfs/mkfs` 可执行文件、`README` 文件以及 `UPROGS` 中定义的所有用户程序都是最新的。
-> - `mkfs/mkfs fs.img README $(UPROGS)`: 这是规则的命令部分，指定了如何生成 `fs.img` 文件。它调用了 `mkfs/mkfs` 可执行文件，传递了 `fs.img` 和 `README` 作为参数，以及 `UPROGS` 中定义的所有用户程序。这个命令可能是在构建一个文件系统镜像的过程中使用用户程序。
->
-> 因此，当执行 `make fs.img` 命令时，Make 工具会检查 `mkfs/mkfs` 可执行文件、`README` 文件和所有定义在 `UPROGS` 中的用户程序是否需要更新，如果有任何更改，则会调用相应的命令来重新生成 `fs.img` 文件。
+这段 Makefile 片段定义了一个变量 `UPROGS`，其中包含了一系列用户程序的路径，以及最终生成文件系统镜像 `fs.img`。
 
+1. `fs.img: mkfs/mkfs README $(UPROGS)`: 这是一个规则，指定了生成 `fs.img` 文件的依赖关系。即在生成 `fs.img` 文件之前，需要确保 `mkfs/mkfs` 可执行文件、`README` 文件以及 `UPROGS` 中定义的所有用户程序都是最新的。
 
+2. `mkfs/mkfs fs.img README $(UPROGS)`: 这是规则的命令部分，指定了如何生成 `fs.img` 文件：
 
-### 5. 包含需要过程文件
+   它调用了 `mkfs/mkfs` 可执行文件，传递了 `fs.img` 和 `README` 作为参数，以及 `UPROGS` 中定义的所有用户程序，后面mkfs 程序详解中，可以看到如何加载这些参数文件的，位于：8.9 节
 
-```Makefile
--include kernel/*.d user/*.d 
-```
-
-通过 `-include` 命令，Make 工具会尝试包含指定的文件，如果文件存在则会被包含进来，如果文件不存在或无法读取，则会忽略错误继续执行。这对于自动生成的依赖关系文件特别有用，因为这些文件可能在一开始并不存在，但随着代码的编译过程会逐步生成。
-
-因此，`-include kernel/*.d user/*.d` 会在 Make 执行时将 `kernel` 目录和 `user` 目录下的所有 `.d` 文件包含进来，以确保 Make 工具能够根据正确的依赖关系来决定何时需要重新编译源文件。

@@ -1,21 +1,15 @@
-# 2.3 riscv64 资料
+# 2.3 riscv64 架构工具集介绍
 
 
 
-## 1. 介绍：
-
-RISC-V 是一种基于精简指令集（RISC）原则设计的开源指令集架构（ISA），RISC-V 是开源的指令集架构
-
-
-
-## 2. 编译环境：
+RISC-V 是一种基于精简指令集（RISC）原则设计的开源指令集架构（ISA），RISC-V 是开源的指令集架构, 携带一些专用的编译和链接工具
 
 目前使用的编译环境：环境搭建的步骤,见 1.1
 
 
 
 
-## 3. 工具：
+## 1. 工具总览：
 
 ```Makefile
 riscv64-unknown-elf-gcc  
@@ -28,11 +22,14 @@ riscv64-unknown-elf-objdump
 
 ![](./images/risc_v_1.png)
 
-### 1. riscv64-unknown-elf-objcopy 命令
+## 2. riscv64-unknown-elf-objcopy 命令
 
-riscv64-unknown-elf-objcopy   -S  -O  binary initcode.out initcode   这个命令的作用是什么
+```Makefile
+riscv64-unknown-elf-objcopy   -S  -O  binary initcode.out initcode   
+```
+这个命令在Makefile文件中出现过，见：2.2节：
 
-> 这个命令的作用是将名为`initcode.out`的目标文件转换为二进制格式，并输出为名为`initcode`的二进制文件。具体参数解释如下：
+> 这个命令的作用是将名为`initcode.out`的目标文件转换为二进制格式，并输出为名为`initcode`的文件。具体参数解释如下：
 >
 > - `riscv64-unknown-elf-objcopy`: 这是一个用于处理目标文件的命令，通常用于裁剪、转换和重新定位目标文件。
 > - `-S`: 表示在拷贝时不复制符号表。
@@ -40,19 +37,24 @@ riscv64-unknown-elf-objcopy   -S  -O  binary initcode.out initcode   这个命�
 > - `initcode.out`: 输入的目标文件名。
 > - `initcode`: 输出的二进制文件名。
 >
-> 因此，该命令的作用是将`initcode.out`转换为二进制格式，并输出为`initcode`文件，同时不包含符号表信息。
 
-### 2. riscv64-unknown-elf-ld  链接选项
 
-`ld -z max-page-size=4096` 是一个用于链接器（ld）的选项，用于设置最大页大小为 4096 字节（4KB）。
 
-链接器（ld）是用于将目标文件连接成可执行文件或共享库的工具。`-z max-page-size` 选项用于指定链接器在生成可执行文件时使用的最大页大小。在这种情况下，设置最大页大小为 4096 字节，意味着链接器将尽可能地对代码和数据进行 4KB 的对齐，以便更好地利用系统的页面机制。
+## 3. riscv64-unknown-elf-ld  链接选项
 
-```Plain
-ld -T   kernel.ld  // 读取链接脚本
-```
+`ld -z max-page-size=4096` 
 
-### 3. riscv64-unknown-elf-gcc   编译器选项
+这个命令在Makefile文件中出现过，见：2.2节：
+
+链接器（ld）是用于将目标文件连接成可执行文件或共享库的工具。`-z max-page-size` 选项用于指定链接器在生成可执行文件时使用的最大页大小。在这种情况下，设置最大页大小为 4096 字节，也就是对代码和数据进行 4KB 的对齐
+
+
+
+## 4. riscv64-unknown-elf-gcc   编译器选项
+
+### 1. 基本规则介绍
+
+参见 Makefile文件：2.2节
 
 ```Makefile
 CFLAGS = -Wall -Werror -O -fno-omit-frame-pointer -ggdb -gdwarf-2
@@ -74,19 +76,21 @@ endif
 这段代码是一个编译kernel时， Makefile 中的变量设置部分，用于指定编译器选项（CFLAGS）。下面是每个选项的解释：
 
 1. `-Wall`: 开启所有警告信息。
-2. `-Werror`: 将警告视为错误，编译过程中如果有警告信息会导致编译失败。**重要，后面编译时，需要处理所有告警**
+2. `-Werror`: 将警告视为错误，编译过程中如果有警告信息会导致编译失败。**重要，后面编译时，需要处理所有告警**！！！
 3. `-O`: 启用优化。
-4. `-fno-omit-frame-pointer`: 禁用省略帧指针优化，保留函数调用栈帧指针。
+4. `-fno-omit-frame-pointer`: 禁用省略帧指针优化，保留函数调用栈帧指针。**重要，后面调试栈指针的时候有涉及**
 5. `-ggdb`: 生成适用于 GNU Debugger (GDB) 的调试信息。
 6. `-gdwarf-2`: 使用 DWARF 版本 2 格式的调试信息。
 7. `-MD`: 生成依赖关系文件，用于自动检测源文件之间的依赖关系。
 8. `-mcmodel=medany`: 指定内存模型为 medium any。这个选项用于限制代码和数据的大小，以适应特定的内存架构。
 9. `-ffreestanding`: 声明程序在无操作系统支持的环境中运行。
 10. `-fno-common`: 禁止全局变量的重复定义。
-11. `-nostdlib`: 不使用标准库。
+11. `-nostdlib`: 不使用标准库。**重要，减少编译依赖，已经支持自定义标准库方法**
 12. `-mno-relax`: 禁用指令优化。
 13. `-I.`: 添加当前目录到头文件搜索路径中。
 14. `$(shell $(CC) -fno-stack-protector -E -x c /dev/null >/dev/null 2>&1 && echo -fno-stack-protector)`: 这行代码使用 shell 命令来检查编译器是否支持 `-fno-stack-protector` 选项，并将其添加到 CFLAGS 中。
+
+扩展资料：
 
 > `-fno-stack-protector` 是 GCC 编译器的一个选项，用于禁用栈保护功能。栈保护是一种编译器级别的安全功能，旨在检测和防止栈溢出攻击。
 >
@@ -94,37 +98,31 @@ endif
 >
 > 通过使用 `-fno-stack-protector` 选项，编译器将不再插入这些栈保护代码，从而关闭栈保护功能。这可能会降低程序的安全性，因为栈溢出攻击有可能成功，导致程序受到损害。然而，在某些特定情况下，禁用栈保护功能可能是必要的，例如对于一些特殊需求或优化目的。
 
-后面的两个 ifneq 语句用于在可能的情况下禁用 PIE（位置无关执行）选项，这通常是为了与特定工具链兼容，如 Ubuntu 16.10 的工具链。
+还是为了让堆栈的逻辑尽可能简单，减少一切对调试堆栈结构和指针的干扰！
 
 
 
-#### **附： 三个常用的GCC选项：**
+### 2. 在 lock的lab中用到的编译选项
 
 #### 1. **`-fsanitize=thread` 和 `-fno-inline` **
 
-   是 GCC 编译器的两个选项，用于特定的目的：
+   是 GCC 编译器的两个选项
 
 **`-fsanitize=thread`**：
 
 - 启用线程检测器（Thread Sanitizer）。
-- Thread Sanitizer 是一个运行时工具，用于检测多线程程序中的数据竞争和其他并发错误。使用这个选项可以帮助发现并调试线程之间的竞争条件。
-- 当使用这个选项编译程序时，GCC 会插入额外的代码来检查并发问题。在运行时，如果检测到数据竞争或其他并发问题，程序会报告这些问题的详细信息。
+- Thread Sanitizer 是一个运行时工具，用于检测多线程程序中的数据竞争和其他并发错误。GCC 会插入额外的代码来检查并发问题。在运行时，如果检测到数据竞争或其他并发问题，程序会报告这些问题的详细信息。
 
 **`-fno-inline`**：
 
 - 禁用函数内联优化。
-- 内联优化是编译器将函数调用替换为函数体，从而减少函数调用的开销并提高性能。但是，内联可能会使得调试信息变得更加复杂。
-- 使用 `-fno-inline` 可以强制编译器不对函数进行内联，有助于调试和分析代码，特别是在与 `-fsanitize=thread` 一起使用时，可以提高问题检测的准确性和报告的可读性。
-
- 总结起来，这两个选项一起使用时，`-fsanitize=thread` 用于启用线程检测，找出多线程程序中的并发问题，而 `-fno-inline` 禁用内联优化，使得线程检测工具可以更准确地报告问题的源头和位置。
+- 与 `-fsanitize=thread` 一起使用时，可以提高问题检测的准确性和报告的可读性。
 
 
 
- #### **2. 检测数据竞争的用法 `-fsanitize=thread` **
+####  **2. 检测数据竞争的用法 `-fsanitize=thread` **
 
-**`在 lock的lab中有用到`**
-
-启用 ThreadSanitizer（通过 `-fsanitize=thread` 选项）后，编译器会在生成的代码中插入一系列专用的函数，这些函数用于帮助检测和报告线程错误，特别是数据竞争问题。下面是一些关键的函数及其作用的详细解释。
+启用 ThreadSanitizer（通过 `-fsanitize=thread` 选项）后，编译器会在生成的代码中插入一系列专用的函数，这些函数用于帮助检测和报告线程错误，下面是一些关键的函数及其作用的扩展资料。
 
 **关键插入函数及其作用**
 
@@ -152,7 +150,9 @@ endif
 
 
 
-####  3. **检测数据安全的用法： `-fsanitize=address`**
+### **附： 常用的GCC选项：**
+
+ **检测数据安全的用法： `-fsanitize=address`**
 
 ![](./images/risc_v_2.png)
 
