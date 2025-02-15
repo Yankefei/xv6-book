@@ -18,15 +18,21 @@ inode 的工作：在内存中预分配50个固定数量，用来表示一个文
 
 ![](./images/file_system_4.png)
 
- **问题：indirect block的结构体放在哪里**？
+**Q&A** 
+
+**indirect block的结构体放在哪里**？
 
 其实就是一个普通的block节点，大小1024， 里面包含了256个4字节的地址，所以也是放在最后面  data blocks  的磁盘部分的，单独占一个block节点。
 
-**问题：如果一个indirect block里面的256个地址没有用完，那么这个indirect block 剩余部分是不是就只是置空**？
+**Q&A**
+
+**如果一个indirect block里面的256个地址没有用完，那么这个indirect block 剩余部分是不是就只是置空**？
 
 通过代码，确实如果大小不足，就会置空
 
-**问题：inode结构体里面的ref 引用计数字段，作用是什么**？
+**Q&A**
+
+**inode结构体里面的ref 引用计数字段，作用是什么**？
 
 Inode的ref是针对**文件层面**的，如果读取文件一次，那么ref便会 ++ 一次。也就是说，如果有多个进程同时调用的话，那么也只有在最后一个进程退出时，才会彻底将 内存中，磁盘中读取到的文件信息释放掉。
 
@@ -176,11 +182,11 @@ struct inode {
 };
 ```
 
-   问题：
+**Q&A**
 
 一个inode节点， 映射的文件最多有多大？
 
-​         268kb，和物理磁盘中一个文件的大小是一致的。映射方法是否相同？两者本来就是一个数据源，都是来自磁盘文件，所以必然是一样的
+ 268kb，和物理磁盘中一个文件的大小是一致的。映射方法是否相同？两者本来就是一个数据源，都是来自磁盘文件，所以必然是一样的
 
 
 
@@ -203,7 +209,9 @@ struct dirent {
 
 按照上面内存布局的顺序来读取和访问里面的元素信息
 
-**问题：函数的主要功能是什么**？
+**Q&A**
+
+**函数的主要功能是什么**？
 
 参数bn表示当前inode->address 索引块的分布，调用bmap后，将返回实际data block的序号，也就是block_id
 
@@ -346,7 +354,11 @@ bfree(int dev, uint b)
 
 里面用到了 iget 函数
 
-问题：dinode  结构是保存在哪里？
+
+
+**Q&A**
+
+dinode  结构是保存在哪里？
 
 ​       整理下 dinode 结构如何保存在 bp->data 中： 
 
@@ -397,7 +409,9 @@ ialloc(uint dev, short type)
 
 
 
-**问题：ialloc 的事情，功能是什么**？
+**Q&A**
+
+**ialloc 的事情，功能是什么**？
 
 1. 是通过磁盘的超级节点，在dinode的磁盘区域，找到一个暂时没用的dinode节点，然后设置为可用后，更新到磁盘的inode区域
 2. 通过获取到的inum节点id, 也就是在dinode磁盘区域的序号，在内存中也找一个未用的inode结构体，同步下dinode的信息，再返回inode的指针
@@ -567,7 +581,9 @@ ilock(struct inode *ip)
 }
 ```
 
-**问题：为什么加sleep锁后，才去从磁盘中更新inode里面的字段**？
+**Q&A**
+
+**为什么加sleep锁后，才去从磁盘中更新inode里面的字段**？
 
 因为ialloc的时候，将dinode里面的信息全部清理后，赋值了type字段，这里刚好进行同步
 
@@ -679,7 +695,13 @@ writei(struct inode *ip, int user_src/*bool*/, uint64 src, uint off, uint n)
 
 
 
-最后面调用 iupdate的作用是什么？ 为了维护ip->addrs[] 里面的节点，有可能是第一次读取，所以刚好将 ip->addrs里面的 block_id索引赋值完毕。
+
+
+**Q&A**
+
+最后面调用 iupdate的作用是什么？ 
+
+为了维护ip->addrs[] 里面的节点，有可能是第一次读取，所以刚好将 ip->addrs里面的 block_id索引赋值完毕。
 
 
 

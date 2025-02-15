@@ -96,7 +96,7 @@ MAXVA:   **0x0000004000000000**
 
 ​	这样做，是为了方便在kernel启动时，在kvmmake中，将trampoline 映射到地址 TRAMPOLINE 上，所以才有了上面的向下指向的箭头，表示这部分是从下面的text中映射的，而且还可以方便用户进程启动的时候，也能映射到同样的地址 TRAMPOLINE 上，便于后面执行trap handle的处理
 
-2. Kstack0 之所以映射到 FreeMemory上，也就是因为后面会将所有进程的栈空间进行预先映射，智能从FreeMemory中申请物理内存，所以也就有一个箭头指向了FreeMemory部分
+2. Kstack0 之所以映射到 FreeMemory上，也就是因为后面会将所有进程的栈空间进行预先映射，只能从FreeMemory中申请物理内存，所以也就有一个箭头指向了FreeMemory部分
 
 > Early in the boot sequence, main calls kvminit (kernel/vm.c:54) to create the kernel’s page table using kvmmake (kernel/vm.c:20). This call occurs before xv6 has enabled paging on the RISC-V, so addresses refer directly to physical memory. kvmmake first allocates a page of physical memory to hold the root page-table page. Then it calls kvmmap to install the translations that the kernel needs. The translations include the kernel’s instructions and data, physical memory up to PHYSTOP,  and memory ranges which are actually devices. proc_mapstacks (kernel/proc.c:33) allocates a kernel stack for each process. It calls kvmmap to map each stack at the virtual address generated  by KSTACK, which leaves room for the invalid stack-guard pages.
 
@@ -391,9 +391,11 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
 
 ### 1. 关于内核栈：
 
-- **Q**: 内核空间中的 kstack0... 到 kstackN 的这些预分配的内核栈信息，后面是如何使用的？
+**Q&A**
 
-​	**A**: 应该是只需要在当前进程从用户态切换到内核的时候，将寄存器 sp 指向当前进程关联的内核栈的顶地址即可 
+内核空间中的 kstack0... 到 kstackN 的这些预分配的内核栈信息，后面是如何使用的？
+
+应该是只需要在当前进程从用户态切换到内核的时候，将寄存器 sp 指向当前进程关联的内核栈的顶地址即可 
 
 ```C
 struct trapframe {

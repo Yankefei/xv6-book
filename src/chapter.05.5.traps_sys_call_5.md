@@ -129,7 +129,7 @@ intr_get()
 
 
 
-#### SPP
+#### 补充资料：SPP
 
 `SPP`位的功能：
 
@@ -163,7 +163,7 @@ intr_get()
 
 
 
-#### SIE
+#### 补充资料：SIE
 
 SSTATUS_SIE（Supervisor Interrupt Enable）        1L << 1
 

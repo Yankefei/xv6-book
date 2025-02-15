@@ -49,6 +49,8 @@ init.c 函数，必须要执行的函数，因为最开始的 sys_open 函数会
 
 ![](/home/uto_ykf/work_os/xv6-book/src/images/file_system_6.png)
 
+**Q&A**
+
 作用是什么？
 
 用于在根目录中，创建一个设备，创建好设备后，设备ID **major**可以传一个如**CONSOLE（1）**，就可以用设备的ID，来初始化下面的回调函数，用来处理设备的一些交互操作
@@ -146,7 +148,9 @@ sys_open(void)
 
 
 
-**问题**：sys_open 为什么第一次在init.c 中调用，会失败? 而且需要先调用**mknod** 才可以？
+**Q&A**
+
+sys_open 为什么第一次在init.c 中调用，会失败? 而且需要先调用**mknod** 才可以？
 
 通过gdb 查看，也很简单，因为 init.c 的第一次open, 执行的mod参数为 **O_RDWR**，那么在 sys_open 里面，不会直接调用create, 而是通过namei 来查找 “console“ 设备名，一开始，如果没有msys_mknod，在根目录肯定无法查找到，所以会直接报错。
 
@@ -400,16 +404,15 @@ isdirempty(struct inode *dp)
 
 
 
-问题：
+**Q&A**
 
-1.  cd ..   的过程是如何完成的？
+cd ..   的过程是如何完成的？
 
-```C
+
 首先，调用 sys_chdir 的函数，参数数path,
 然后通过 namei 节点，获取都对应path 的inode节点, 假设变量为ip，内部调用的是 dirlookup 函数，而且访问 .. 也是通过name的匹配完成的。
 调用 iput，来将当前p->pwd的inode 的引用释放，并重置 cwd为ip.
 返回
-```
 
 
 

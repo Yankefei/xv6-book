@@ -841,9 +841,9 @@ uartstart()
 
 
 
-问题：
+**Q&A**
 
-1. 为什么在不使用 consolewrite的时候，也会持续触发  uartintr 函数？
+为什么在不使用 consolewrite的时候，也会持续触发  uartintr 函数？
 
 这个是因为在kernel里面，调用了下面的这个**`uartputc_sync`** 函数来打印日志，
 

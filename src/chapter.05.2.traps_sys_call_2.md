@@ -1,6 +1,6 @@
 
 
-# 5.3 Traps相关的代码
+# 5.3 Traps相关的代码(精华)
 
 ##  1. traps from user space
 
@@ -134,9 +134,11 @@ uservec:
         jr t0
 ```
 
-Q: User space 的代码在什么时候可能会调用这个函数? 应该在任何都可能被调度走，真是这样吗？
+**Q&A**
 
-A:是的
+User space 的代码在什么时候可能会调用这个函数? 应该在任何都可能被调度走，真是这样吗？
+
+是的
 
 
 
@@ -213,7 +215,9 @@ usertrap(void)
 
 An application that wants to invoke a kernel function (e.g., the read system call in xv6) must transition to the kernel; an application *cannot* invoke a kernel function directly. CPUs provide a special instruction that switches the CPU from user mode to supervisor mode and enters the kernel at an entry point specified by the kernel. (RISC-V provides the ***ecall*** instruction for this purpose.) 
 
-问题： 为什么必须执行 intr_on ? 如果注释掉，会发生什么
+**Q&A**
+
+为什么必须执行 intr_on ? 如果注释掉，会发生什么
 
 如果注释掉，看起来会触发很多 usertrap 里面的设备中断，调用 **devintr** 函数
 
@@ -332,7 +336,9 @@ usertrapret(void)
 
 这里面开头的 intr_off 函数，是为了在trap_handle 函数由 kerneltrap 函数转移到 usertrap，所以暂时关闭，直到进入用户空间，
 
-问题： 为什么必须执行 intr_off 函数？注释掉会怎么样？
+**Q&A**
+
+为什么必须执行 intr_off 函数？注释掉会怎么样？
 
 看起来注释掉，会卡在 usertrapret 函数返回之后
 
@@ -514,7 +520,9 @@ kerneltrap()
 }
 ```
 
-问题:gdb 后，观察到的，也是 0x120，为何不是0x122 ??
+**Q&A**
+
+gdb 后，观察到的，也是 0x120，为何不是0x122 ??
 
 可能在于，当进入这个kerneltrap函数的时候，这个 **`SSTATUS_SIE`** 是会自动清理掉的 , 等结束中断处理后，再被
 
@@ -528,7 +536,11 @@ kerneltrap()
 
 ### 步骤3： 继续执行 kernelvec 汇编函数
 
-为什么不用保存sp？ 在yield 存在的情况下，是因为yield只是让执行当前执行流暂时断开，然后执行其他 RUNNABLE 状态的进程，但是会保存所有当前执行相关的寄存器，就比如sp, 等后面某个cpu 有时间，然后继续这个暂停的进程，所以在从 kerneltrap 返回之后，可以直接用 sp来进行还原处理
+**Q&A**
+
+为什么不用保存sp？ 
+
+在yield 存在的情况下，是因为yield只是让执行当前执行流暂时断开，然后执行其他 RUNNABLE 状态的进程，但是会保存所有当前执行相关的寄存器，就比如sp, 等后面某个cpu 有时间，然后继续这个暂停的进程，所以在从 kerneltrap 返回之后，可以直接用 sp来进行还原处理
 
 ```C
  ......
