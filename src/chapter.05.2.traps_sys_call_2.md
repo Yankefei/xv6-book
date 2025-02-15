@@ -1,6 +1,6 @@
 
 
-# 5.3 Traps相关的代码(精华)
+# 5.3 Traps相关的代码(重要)
 
 ##  1. traps from user space
 

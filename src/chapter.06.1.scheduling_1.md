@@ -1,4 +1,4 @@
-# 6.1 Scheduling介绍(重要)
+# 6.1 Scheduling介绍(精华)
 
 
 
