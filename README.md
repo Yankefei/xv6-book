@@ -27,14 +27,14 @@
 * [第五章: trap和系统调用篇](./src/chapter.05.0.md)
   * [5.1 System call 介绍](./src/chapter.05.0.system_call_1.md)
   * [5.2 Trap 介绍](./src/chapter.05.1.traps_sys_call_1.md)
-  * [5.3 Traps相关的代码(精华)](./src/chapter.05.2.traps_sys_call_2.md)
+  * [5.3 Traps相关的代码(重要)](./src/chapter.05.2.traps_sys_call_2.md)
   * [5.4 Timer interrupts](./src/chapter.05.3.traps_sys_call_3.md)
   * [5.5 其他trap代码分析](./src/chapter.05.4.traps_sys_call_4.md)
   * [5.6 常用寄存器整理](./src/chapter.05.5.traps_sys_call_5.md)
   * [5.7 PLIC机制](./src/chapter.05.6.traps_sys_call_6.md)
 
 * [第六章:  Scheduling调度篇](./src/chapter.06.0.md)
-  * [6.1 Scheduling介绍(重要)](./src/chapter.06.1.scheduling_1.md)
+  * [6.1 Scheduling介绍(精华)](./src/chapter.06.1.scheduling_1.md)
 
 * [第七章: Lock篇](./src/chapter.07.0.md)
   * [7.1 锁相关(重要)](./src/chapter.07.1.lock_1.md)
